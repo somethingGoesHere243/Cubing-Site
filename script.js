@@ -283,86 +283,90 @@ const timerEnd = () => {
     generateNewScramble();
 }
 
-// Get an intial scramble to display on page
-generateNewScramble();
-// Display current averages and records from local storage
-let mostRecentTime = previousTimes.shift() || {'time': Infinity}
-numberOfSolves -= 1;
-updateAverages(mostRecentTime['time']);
-
-// Add necessary event listeners to buttons on page
-clearRecordsBtn.addEventListener('click', () => {
-    resetRecords();
-    clearRecordsBtn.blur();
-});
-
-newScrambleBtn.addEventListener('click', () => {
+// Check if on timer page then perform necessary start up functions
+if (clearRecordsBtn) {
+    // Get an intial scramble to display on page
     generateNewScramble();
-    newScrambleBtn.blur();
-});
+    // Display current averages and records from local storage
+    let mostRecentTime = previousTimes.shift() || {'time': Infinity}
+    numberOfSolves -= 1;
+    updateAverages(mostRecentTime['time']);
 
-removePrevSolveBtn.addEventListener('click', () => {
-    removePrevSolve();
-    removePrevSolveBtn.blur();
-})
+    // Add necessary event listeners to buttons on page
+    clearRecordsBtn.addEventListener('click', () => {
+        resetRecords();
+        clearRecordsBtn.blur();
+    });
 
-showOptionsBtn.addEventListener('click', () => {
-    if (optionsShowing) {
+    newScrambleBtn.addEventListener('click', () => {
+        generateNewScramble();
+        newScrambleBtn.blur();
+    });
+
+    removePrevSolveBtn.addEventListener('click', () => {
+        removePrevSolve();
+        removePrevSolveBtn.blur();
+    })
+
+    showOptionsBtn.addEventListener('click', () => {
+        if (optionsShowing) {
+            optionsPage.style.display = 'none';
+            optionsShowing = false;
+        } else {
+            optionsPage.style.display = 'block';
+            optionsShowing = true;
+        }
+        showOptionsBtn.blur();
+    });
+
+    hideOptionsBtn.addEventListener('click', () => {
         optionsPage.style.display = 'none';
         optionsShowing = false;
-    } else {
-        optionsPage.style.display = 'block';
-        optionsShowing = true;
-    }
-    showOptionsBtn.blur();
-});
+        hideOptionsBtn.blur();
+    });
 
-hideOptionsBtn.addEventListener('click', () => {
-    optionsPage.style.display = 'none';
-    optionsShowing = false;
-    hideOptionsBtn.blur();
-});
-
-// Add event listener to change timer colour when timer is about to be started, or end timer if it is already running
-document.addEventListener('keydown', (key) => {
-    if (!optionsShowing && key.code === 'Space'){
-        if (timerRunning) {
-            timerEnd()
-        } else {
-            timer.style.color = '#dd6342';
+    // Add event listener to change timer colour when timer is about to be started, or end timer if it is already running
+    document.addEventListener('keydown', (key) => {
+        if (!optionsShowing && key.code === 'Space'){
+            if (timerRunning) {
+                timerEnd()
+            } else {
+                timer.style.color = '#dd6342';
+            }
         }
-    }
-})
+    })
 
-// Add event listener to start timer and reset timer colour
-document.addEventListener('keyup', (key) => {
-    if (!optionsShowing && key.code === 'Space') {
-        // Check timer is trying to start
-        if (timer.style.color === 'rgb(221, 99, 66)') {
-            timerStart();
+    // Add event listener to start timer and reset timer colour
+    document.addEventListener('keyup', (key) => {
+        if (!optionsShowing && key.code === 'Space') {
+            // Check timer is trying to start
+            if (timer.style.color === 'rgb(221, 99, 66)') {
+                timerStart();
+            }
+            timer.style.color = '#000000';
         }
-        timer.style.color = '#000000';
-    }
-})
+    })
 
-// Add event listener to update local storage when page is closed/refreshed
-window.addEventListener('beforeunload', () => {
-    localStorage.setItem('numberOfSolves', numberOfSolves);
-    localStorage.setItem('previousTimes', JSON.stringify(previousTimes));
-})
+    // Add event listener to update local storage when page is closed/refreshed
+    window.addEventListener('beforeunload', () => {
+        localStorage.setItem('numberOfSolves', numberOfSolves);
+        localStorage.setItem('previousTimes', JSON.stringify(previousTimes));
+    })
 
-// Add event listener to show/hide user data on smaller screens
-const showUserDataBtn = document.getElementById('show-user-data-btn');
-let userDataIsShowing = true;
-showUserDataBtn.addEventListener('click', () => {
-    if (userDataIsShowing) {
-        userDataContainer.classList.add('hidden');
-        showUserDataBtn.innerHTML = 'Show User Data';
-        userDataIsShowing = false;
-    } else if (!optionsShowing) {
-        userDataContainer.classList.remove('hidden');
-        showUserDataBtn.innerHTML = 'Hide User Data';
-        userDataIsShowing = true;
-    } 
-})
+    // Add event listener to show/hide user data on smaller screens
+    const showUserDataBtn = document.getElementById('show-user-data-btn');
+    let userDataIsShowing = true;
+    showUserDataBtn.addEventListener('click', () => {
+        if (userDataIsShowing) {
+            userDataContainer.classList.add('hidden-media');
+            showUserDataBtn.innerHTML = 'Show User Data';
+            userDataIsShowing = false;
+        } else if (!optionsShowing) {
+            userDataContainer.classList.remove('hidden-media');
+            showUserDataBtn.innerHTML = 'Hide User Data';
+            userDataIsShowing = true;
+        } 
+    })
+}
+
 

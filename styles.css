@@ -10,25 +10,55 @@
     --sidebar-button-outline: #4f6d7a;
     --options-page-background: #e8dab2;
     --options-page-border: #dd6e42;
+    --learning-link-background: #e8dab2;
+    --learning-link-border: #dd6e42;
+    --learning-link-hover-background: #4f6d7a;
+    --learning-link-hover-text: #e8dab2;
 }
+
+/* General Styling */
 
 body {
     position: relative;
     display: flex;
     flex-direction: row;
-    width: 100vw;
-    height: 100vh;
-    min-height: 700px;
+    min-width: 100vw;
+    min-height: max(100vh, 900px);
     margin: 0;
     padding: 0;
 }
+
+#main-container {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: var(--main-background);
+}
+
+.grid {
+    display: grid;
+}
+
+.flex {
+    display: flex;
+}
+
+.hidden {
+    display: none;
+}
+
+.centered {
+    margin-top: 7.5%;
+}
+
+/* timer.html Styling */
 
 #user-data-container {
     width: 20%;
     background-color: var(--sidebar-background);
 }
 
-#navbar {
+#navbar-corner {
     display: flex;
     flex-direction: column;
     height: 15%;
@@ -37,18 +67,18 @@ body {
     border: 3px solid var(--sidebar-background);
 }
 
-.nav-link {
+.nav-link-corner {
     display: flex;
     align-items: center;
     height: calc(100% / 3);
     padding-left: 1rem;
     border: 3px solid var(--sidebar-background);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: black;
     text-decoration: none;
 }
 
-.nav-link:hover {
+.nav-link-corner:hover {
     background-color: var(--sidebar-background);
     color: var(--sidebar-text);
     border-color: var(--main-background);
@@ -80,14 +110,6 @@ body {
 
 #user-data-container button:active {
     background-color: var(--sidebar-button-pressed);
-}
-
-#main-container {
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    background-color: var(--main-background);
 }
 
 #scramble-container {
@@ -222,23 +244,7 @@ body {
     background-color: var(--sidebar-background);
 }
 
-.grid {
-    display: grid;
-}
-
-.flex {
-    display: flex;
-}
-
-.hidden {
-    display: none;
-}
-
-.centered {
-    margin-top: 7.5%;
-}
-
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
     #user-data-container {
         width: 100%;
         height: 100%;
@@ -271,5 +277,96 @@ body {
 
     #show-user-data-btn {
         display: block;
+    }
+
+    .hidden-media {
+        display: none;
+    }
+}
+
+/* learning-page.html styling */
+
+#navbar-top {
+    position: fixed;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    height: 5rem;
+    width: 100%;
+    padding: 0.5% 10%;
+    background-color: var(--sidebar-background);
+}
+
+.nav-link-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% / 3);
+    background-color: var(--main-background);
+    border: 3px solid var(--sidebar-background);
+    font-size: 2rem;
+    color: black;
+    text-decoration: none;
+}
+
+.nav-link-top:hover {
+    background-color: var(--sidebar-background);
+    color: var(--sidebar-text);
+    border-color: var(--main-background);
+}
+
+.learning-page-main-container {
+    padding-top: 5rem;
+}
+
+#learning-header {
+    text-align: center;
+    font-size: 4rem;
+    margin: 2rem;
+}
+
+#learning-links-container {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 10px;
+    height: auto;
+    min-height: 70%;
+    width: 60%;
+    margin: 0 20%;
+}
+
+.learning-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    background-color: var(--learning-link-background);
+    border: 5px solid var(--learning-link-border);
+    border-radius: 10px;
+}
+
+.learning-link:hover {
+    background-color: var(--learning-link-hover-background);
+    color: var(--learning-link-hover-text);
+    cursor: pointer;
+}
+
+.learning-link-image {
+    width: 60%;
+}
+
+.learning-link-label {
+    font-size: 2rem;
+}
+
+@media (max-width: 1200px) {
+    
+    #learning-links-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(1fr, 6);
+        padding-bottom: 20px;
     }
 }
