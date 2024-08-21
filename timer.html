@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Cubing Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="user-data-container">
+            <nav id="navbar">
+                <a href="learning-page.html" class="nav-link">Learn Algorithms</a>
+                <a class="nav-link">Solver</a>
+                <a class="nav-link">Virtual Cube</a>
+            </nav>
+            <h2>Current Records</h2>
+            <div class="grid" id="user-records">
+                <span>Mean of all</span><span id="mean-of-all">N/A</span>
+                <span>Single</span><span id="best-time">N/A</span>
+                <span>Mean Of 3</span><span id="best-Mo3">N/A</span>
+                <span>Average Of 5</span><span id="best-Ao5">N/A</span>
+                <span>Average Of 12</span><span id="best-Ao12">N/A</span>
+            </div>
+            <button id="remove-prev-solve-btn" type="button">Remove Previous Solve</button>
+            <button id="clear-records-btn" type="button">Clear Records</button>
+        </div>
+
+        <div class="flex" id="main-container">
+            <div class="flex" id="scramble-container">
+                <div class="flex" id="scramble-btns-container">
+                    <button id="show-options-btn" type="button">Options</button>
+                    <button id="new-scramble-btn" type="button">New</button>
+                </div>
+                <span id="scramble-text"></span>
+            </div>
+            <div class="flex" id="timer-container">
+                <h2>Space to Start/End</h2>
+                <span id="timer">0:00.00</span>
+                <div class="grid" id = current-averages>
+                    <span>Mean Of 3</span><span id="current-Mo3">N/A</span>
+                    <span>Average Of 5</span><span id="current-Ao5">N/A</span>
+                    <span>Average Of 12</span><span id="current-Ao12">N/A</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="options-page-border">
+            <div class="flex" id="options-page">
+                <div id="options-title">Options</div>
+                <label for="inspection-time">Amount of inspection time: 
+                    <select id="inspection-time">
+                        <option value="none">None</option>
+                        <option value="15s">15 Seconds</option>
+                    </select>
+                </label>
+                <label for="hide-during-solve">Hide all other elements while timer running <input id="hide-during-solve" type="checkbox"></label>
+                <button id="hide-options-btn" type="button">Save Changes</button>
+            </div>
+        </div>
+
+        <button id="show-user-data-btn" type="button">Hide User Data</button>
+
+        <script src="script.js"></script>
+    </body>
+</html>
