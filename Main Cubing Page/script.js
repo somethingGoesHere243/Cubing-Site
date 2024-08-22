@@ -375,6 +375,7 @@ if (clearRecordsBtn) {
 // Algorithm pages Script
 
 const twoLookOLLContainer = document.getElementById('2-look-oll');
+const twoLookPLLContainer = document.getElementById('2-look-pll');
 
 let typesToDisplay = [];
 
@@ -409,7 +410,23 @@ if (twoLookOLLContainer) {
             } else {
                 typesToDisplay.splice(typesToDisplay.indexOf(type), 1);
             }
-            displayAlgs(twoLookOLLContainer, twoLookOLLAlgorithms)
+            displayAlgs(twoLookOLLContainer, twoLookOLLAlgorithms);
+        })
+    }) 
+}
+
+if (twoLookPLLContainer) {
+    displayAlgs(twoLookPLLContainer, twoLookPLLAlgorithms); 
+    // Add event listeners to filter system
+    twoLookPLLAlgorithmsTypes.forEach(type => {
+        const checkBox = document.getElementById(type);
+        checkBox.addEventListener('click' , () => {
+            if (checkBox.checked) {
+                typesToDisplay.unshift(type);
+            } else {
+                typesToDisplay.splice(typesToDisplay.indexOf(type), 1);
+            }
+            displayAlgs(twoLookPLLContainer, twoLookPLLAlgorithms);
         })
     }) 
 }

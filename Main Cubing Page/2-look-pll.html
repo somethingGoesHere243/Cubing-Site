@@ -7,7 +7,28 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <h1>2 Look PLL</h1>
+        <nav id="navbar-top">
+            <a href="timer.html" class="nav-link-top">Timer</a>
+            <a class="nav-link-top">Solver</a>
+            <a class="nav-link-top">Virtual Cube</a>
+        </nav>
+        <a href="learning-page.html" id="back-button">Back</a>
+        <div class="padding-top-of-screen" id="main-container">
+            <h1 id="learning-header">2 Look PLL</h1>
+            <p id="learning-sub-header">2 look PLL is a set of algorithms which can be used to correctly permute the final layer of the cube in at most 2 algorithms</p>
+            <div id="filter-container">
+                <p>Select algorithms: </p>
+                <div id="algorithm-types">
+                    <label for="edges">Edges <input id="edges" type="checkbox"></label>
+                    <label for="corners">Corners <input id="corners" type="checkbox"></label>
+                </div>
+            </div>
+            <div id="2-look-pll" class="algorithms-container">
+                <!-- Add individual algorithms here using javascript as needed -->
+            </div>
+        </div>
+        
+        <script src="algorithms.js"></script>
         <script src="script.js"></script>
     </body>
 </html>
