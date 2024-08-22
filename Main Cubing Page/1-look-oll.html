@@ -7,7 +7,41 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <h1>1 Look OLL</h1>
+        <nav id="navbar-top">
+            <a href="timer.html" class="nav-link-top">Timer</a>
+            <a class="nav-link-top">Solver</a>
+            <a class="nav-link-top">Virtual Cube</a>
+        </nav>
+        <a href="learning-page.html" id="back-button">Back</a>
+        <div class="padding-top-of-screen" id="main-container">
+            <h1 id="learning-header">1 Look OLL</h1>
+            <p id="learning-sub-header">1 look OLL is a set of algorithms which can be used to correctly orient the final layer of the cube in a single algorithm</p>
+            <div id="filter-container">
+                <p>Select algorithms: </p>
+                <div id="algorithm-types">
+                    <label for="awkward-shape">Awkward Shapes <input id="awkward-shape" type="checkbox"></label>
+                    <label for="big-bolt">Big Bolts <input id="big-bolt" type="checkbox"></label>
+                    <label for="c-shape">C Shapes <input id="c-shape" type="checkbox"></label>
+                    <label for="corners-oriented">Corners Oriented <input id="corners-oriented" type="checkbox"></label>
+                    <label for="cross">Crosses <input id="cross" type="checkbox"></label>
+                    <label for="dot">Dots <input id="dot" type="checkbox"></label>
+                    <label for="fish">Fish <input id="fish" type="checkbox"></label>
+                    <label for="i-shape">I Shapes <input id="i-shape" type="checkbox"></label>
+                    <label for="knight">Knights <input id="knight" type="checkbox"></label>
+                    <label for="p-shape">P Shapes <input id="p-shape" type="checkbox"></label>
+                    <label for="small-bolt">Small Bolts <input id="small-bolt" type="checkbox"></label>
+                    <label for="small-l">Small L's <input id="small-l" type="checkbox"></label>
+                    <label for="square">Squares <input id="square" type="checkbox"></label>
+                    <label for="t-shape">T Shapes <input id="t-shape" type="checkbox"></label>
+                    <label for="w-shape">W Shapes <input id="w-shape" type="checkbox"></label>
+                </div>
+            </div>
+            <div id="1-look-oll" class="algorithms-container">
+                <!-- Add individual algorithms here using javascript as needed -->
+            </div>
+        </div>
+        
+        <script src="algorithms.js"></script>
         <script src="script.js"></script>
     </body>
 </html>

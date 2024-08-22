@@ -376,6 +376,7 @@ if (clearRecordsBtn) {
 
 const twoLookOLLContainer = document.getElementById('2-look-oll');
 const twoLookPLLContainer = document.getElementById('2-look-pll');
+const oneLookOLLContainer = document.getElementById('1-look-oll');
 
 let typesToDisplay = [];
 
@@ -386,7 +387,7 @@ const displayAlgs = (container, algs) => {
         if (typesToDisplay.includes(type)) {
             container.innerHTML += `
                 <div class='algorithm-card'>
-                    <img class='algorithm-img' src=${src}>
+                    <img class='algorithm-img' src=${src} alt=${name}>
                     <div class='algorithm-text'>
                         <p class='algorithm-name'>Name: ${name}</p>
                         <p class='algorithm'>Algorithm:</p>
@@ -427,6 +428,22 @@ if (twoLookPLLContainer) {
                 typesToDisplay.splice(typesToDisplay.indexOf(type), 1);
             }
             displayAlgs(twoLookPLLContainer, twoLookPLLAlgorithms);
+        })
+    }) 
+}
+
+if (oneLookOLLContainer) {
+    displayAlgs(oneLookOLLContainer, oneLookOLLAlgorithms); 
+    // Add event listeners to filter system
+    oneLookOLLAlgorithmsTypes.forEach(type => {
+        const checkBox = document.getElementById(type);
+        checkBox.addEventListener('click' , () => {
+            if (checkBox.checked) {
+                typesToDisplay.unshift(type);
+            } else {
+                typesToDisplay.splice(typesToDisplay.indexOf(type), 1);
+            }
+            displayAlgs(oneLookOLLContainer, oneLookOLLAlgorithms);
         })
     }) 
 }
