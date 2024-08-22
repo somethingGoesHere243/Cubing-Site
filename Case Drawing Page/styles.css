@@ -1,0 +1,101 @@
+body {
+    background-color: #e8dab2;
+}
+
+#cube-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
+    grid-template-rows: 1fr 2fr 2fr 2fr 1fr;
+    margin: 50px;
+    width: 512px;
+    height: 512px;
+}
+
+#cube-container > div {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    cursor: pointer;
+    color: transparent;
+}
+
+.square-piece {
+    background-color: #808080;
+    border: 2px solid black;
+}
+
+.top-side-piece-border {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    background-color: transparent;
+    border-bottom: 64px solid black;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+}
+
+.top-side-piece {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    background-color: transparent;
+    margin: 2px 4px;
+    border-bottom: 58px solid #808080;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+}
+
+.right-side-piece-border {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    background-color: transparent;
+    border-left: 64px solid black;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+}
+
+.right-side-piece {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    background-color: transparent;
+    margin: 4px 2px;
+    border-left: 58px solid #808080;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+}
+
+.bottom-side-piece-border {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    background-color: transparent;
+    border-top: 64px solid black;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+}
+
+.bottom-side-piece {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    background-color: transparent;
+    margin: 2px 4px;
+    border-top: 58px solid #808080;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+}
+
+.left-side-piece-border {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    background-color: transparent;
+    border-right: 64px solid black;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+}
+
+.left-side-piece {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    background-color: transparent;
+    margin: 4px 2px;
+    border-right: 58px solid #808080;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+}
