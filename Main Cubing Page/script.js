@@ -466,17 +466,195 @@ if (oneLookPLLContainer) {
 }
 
 // Solver page scripts
+const solveBtn = document.getElementById('solve-btn');
 
 const colors = ['red', 'white', 'green', 'yellow', 'blue', 'orange'];
+
+// Function to get the current color of a given sticker
+const getColor = (sticker) => {
+    let classList = [...sticker.classList];
+    classList.splice(classList.indexOf('sticker'), 1);
+    return classList[0];
+}
+
+// Function to retrieve scramble input
+const getScramble = () => {
+    let scramble = [];
+    // Get layout of each face (store index of color in colors array rather than the string)
+    colors.forEach(color => {
+        const face = document.getElementById(`${color}-face`);
+        const faceStickers = face.getElementsByClassName('sticker')
+        let faceScramble = []; 
+        [...faceStickers].forEach(sticker => {
+            const stickerColor = getColor(sticker);
+            faceScramble.push(colors.indexOf(stickerColor));
+        });
+        scramble.push(faceScramble);
+    })
+    return scramble
+}
+
+// Function to rotate the up face of the cube 90deg clockwise
+const rotateU = (scramble) => {
+    // Edit up face
+    const upFace = scramble[1];
+    scramble[1] = [upFace[6], upFace[3], upFace[0], upFace[7], upFace[4], upFace[1], upFace[8], upFace[5], upFace[2]];
+    // Store right face
+    const rightFace = [...scramble[0]];
+    // Edit right face
+    scramble[0][0] = scramble[4][8];
+    scramble[0][3] = scramble[4][5];
+    scramble[0][6] = scramble[4][2];
+    // Edit back face
+    scramble[4][2] = scramble[5][6];
+    scramble[4][5] = scramble[5][3];
+    scramble[4][8] = scramble[5][0];
+    // Edit left face
+    scramble[5][0] = scramble[2][0];
+    scramble[5][3] = scramble[2][3];
+    scramble[5][6] = scramble[2][6];
+    // Edit front face
+    scramble[2][0] = rightFace[0];
+    scramble[2][3] = rightFace[3];
+    scramble[2][6] = rightFace[6];
+}
+
+// Function to rotate the down face of the cube 90deg clockwise
+const rotateD = (scramble) => {
+    // Edit down face
+    const downFace = scramble[3];
+    scramble[3] = [downFace[6], downFace[3], downFace[0], downFace[7], downFace[4], downFace[1], downFace[8], downFace[5], downFace[2]];
+    // Store right face
+    const rightFace = [...scramble[0]];
+    // Edit right face
+    scramble[0][2] = scramble[2][2];
+    scramble[0][5] = scramble[2][5];
+    scramble[0][8] = scramble[2][8];
+    // Edit front face
+    scramble[2][2] = scramble[5][2];
+    scramble[2][5] = scramble[5][5];
+    scramble[2][8] = scramble[5][8];
+    // Edit left face
+    scramble[5][2] = scramble[4][6];
+    scramble[5][5] = scramble[4][3];
+    scramble[5][8] = scramble[4][0];
+    // Edit back face
+    scramble[4][0] = rightFace[8];
+    scramble[4][3] = rightFace[5];
+    scramble[4][6] = rightFace[2];
+}
+
+// Function to rotate the front face of the cube 90deg clockwise
+const rotateF = (scramble) => {
+    // Edit front face
+    const frontFace = scramble[2];
+    scramble[2] = [frontFace[6], frontFace[3], frontFace[0], frontFace[7], frontFace[4], frontFace[1], frontFace[8], frontFace[5], frontFace[2]];
+    // Store right face
+    const rightFace = [...scramble[0]];
+    // Edit right face
+    scramble[0][6] = scramble[1][8];
+    scramble[0][7] = scramble[1][5];
+    scramble[0][8] = scramble[1][2];
+    // Edit up face
+    scramble[1][2] = scramble[5][0];
+    scramble[1][5] = scramble[5][1];
+    scramble[1][8] = scramble[5][2];
+    // Edit left face
+    scramble[5][0] = scramble[3][6];
+    scramble[5][1] = scramble[3][3];
+    scramble[5][2] = scramble[3][0];
+    // Edit down face
+    scramble[3][0] = rightFace[6];
+    scramble[3][3] = rightFace[7];
+    scramble[3][6] = rightFace[8];
+}
+
+// Function to rotate the back face of the cube 90deg clockwise
+const rotateB = (scramble) => {
+    // Edit back face
+    const backFace = scramble[4];
+    scramble[4] = [backFace[6], backFace[3], backFace[0], backFace[7], backFace[4], backFace[1], backFace[8], backFace[5], backFace[2]];
+    // Store right face
+    const rightFace = [...scramble[0]];
+    // Edit right face
+    scramble[0][0] = scramble[3][2];
+    scramble[0][1] = scramble[3][5];
+    scramble[0][2] = scramble[3][8];
+    // Edit down face
+    scramble[3][2] = scramble[5][8];
+    scramble[3][5] = scramble[5][7];
+    scramble[3][8] = scramble[5][6];
+    // Edit left face
+    scramble[5][6] = scramble[1][0];
+    scramble[5][7] = scramble[1][3];
+    scramble[5][8] = scramble[1][6];
+    // Edit up face
+    scramble[1][0] = rightFace[2];
+    scramble[1][3] = rightFace[1];
+    scramble[1][6] = rightFace[0];
+}
+
+// Function to rotate the right face of the cube 90deg clockwise
+const rotateR = (scramble) => {
+    // Edit right face
+    const rightFace = scramble[0];
+    scramble[0] = [rightFace[6], rightFace[3], rightFace[0], rightFace[7], rightFace[4], rightFace[1], rightFace[8], rightFace[5], rightFace[2]];
+    // Store up face
+    const upFace = [...scramble[1]];
+    // Edit up face
+    scramble[1][0] = scramble[2][0];
+    scramble[1][1] = scramble[2][1];
+    scramble[1][2] = scramble[2][2];
+    // Edit front face
+    scramble[2][0] = scramble[3][0];
+    scramble[2][1] = scramble[3][1];
+    scramble[2][2] = scramble[3][2];
+    // Edit down face
+    scramble[3][0] = scramble[4][0];
+    scramble[3][1] = scramble[4][1];
+    scramble[3][2] = scramble[4][2];
+    // Edit back face
+    scramble[4][0] = upFace[0];
+    scramble[4][1] = upFace[1];
+    scramble[4][2] = upFace[2];
+}
+
+// Function to rotate the left face of the cube 90deg clockwise
+const rotateL = (scramble) => {
+    // Edit left face
+    const leftFace = scramble[5];
+    scramble[5] = [leftFace[6], leftFace[3], leftFace[0], leftFace[7], leftFace[4], leftFace[1], leftFace[8], leftFace[5], leftFace[2]];
+    // Store up face
+    const upFace = [...scramble[1]];
+    // Edit up face
+    scramble[1][6] = scramble[4][6];
+    scramble[1][7] = scramble[4][7];
+    scramble[1][8] = scramble[4][8];
+    // Edit back face
+    scramble[4][6] = scramble[3][6];
+    scramble[4][7] = scramble[3][7];
+    scramble[4][8] = scramble[3][8];
+    // Edit down face
+    scramble[3][6] = scramble[2][6];
+    scramble[3][7] = scramble[2][7];
+    scramble[3][8] = scramble[2][8];
+    // Edit front face
+    scramble[2][6] = upFace[6];
+    scramble[2][7] = upFace[7];
+    scramble[2][8] = upFace[8];
+}
+
+// Function to solve a given scramble and output the steps taken to solve
+const solve = (scramble) => {
+
+} 
 
 // Add event listeners to each sticker allowing them to change color when clicked
 [...document.getElementsByClassName('sticker')].forEach(sticker => {
     if (![...sticker.classList].includes('center')) {
         sticker.addEventListener('click', () => {
-            let classList = [...sticker.classList];
-            // Retrieve color class from sticker's class list
-            classList.splice(classList.indexOf('sticker'), 1);
-            const currColor = classList[0];
+            // Retrieve current color of sticker
+            const currColor = getColor(sticker);
             // Retrieve next color to be given after click
             const newColor = colors[(colors.indexOf(currColor) + 1) % 6];
             // Replace color class on sticker
@@ -484,4 +662,17 @@ const colors = ['red', 'white', 'green', 'yellow', 'blue', 'orange'];
             sticker.classList.add(newColor);
         })
     } 
+})
+
+// Add event listener to solve button to read the given scramble then solve it
+solveBtn.addEventListener('click', () => {
+    const currCubePosn = getScramble();
+    let solution = currCubePosn;
+    rotateF(solution);
+    rotateU(solution);
+    rotateB(solution);
+    rotateU(solution);
+    rotateR(solution);
+    rotateR(solution);
+    console.log(solution);
 })
