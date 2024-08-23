@@ -464,3 +464,24 @@ if (oneLookPLLContainer) {
         })
     }) 
 }
+
+// Solver page scripts
+
+const colors = ['red', 'white', 'green', 'yellow', 'blue', 'orange'];
+
+// Add event listeners to each sticker allowing them to change color when clicked
+[...document.getElementsByClassName('sticker')].forEach(sticker => {
+    if (![...sticker.classList].includes('center')) {
+        sticker.addEventListener('click', () => {
+            let classList = [...sticker.classList];
+            // Retrieve color class from sticker's class list
+            classList.splice(classList.indexOf('sticker'), 1);
+            const currColor = classList[0];
+            // Retrieve next color to be given after click
+            const newColor = colors[(colors.indexOf(currColor) + 1) % 6];
+            // Replace color class on sticker
+            sticker.classList.remove(currColor);
+            sticker.classList.add(newColor);
+        })
+    } 
+})
