@@ -85,3 +85,29 @@ const oneLookOLLAlgorithms = [
 ];
 
 const oneLookOLLAlgorithmsTypes = ['awkward-shape', 'big-bolt', 'c-shape', 'corners-oriented', 'cross', 'dot', 'fish', 'i-shape', 'knight', 'p-shape', 'small-bolt', 'small-l', 'square', 't-shape', 'w-shape'];
+
+const oneLookPLLAlgorithms = [
+    {name: 'F', type: 'adj-corner-swap', src:'One-Look-PLL-IMGs\\F.png', algorithm:"R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R"},
+    {name: 'Ga', type: 'adj-corner-swap', src:'One-Look-PLL-IMGs\\Ga.png', algorithm:"R2 U R' U R' U' R U' R2 U' D R' U R D'"},
+    {name: 'Gb', type: 'adj-corner-swap', src:'One-Look-PLL-IMGs\\Gb.png', algorithm:"R' U' R U D' R2 U R' U R U' R U' R2 D"},
+    {name: 'Gc', type: 'adj-corner-swap', src:'One-Look-PLL-IMGs\\Gc.png', algorithm:"R2 U' R U' R U R' U R2 U D' R U' R' D"},
+    {name: 'Gd', type: 'adj-corner-swap', src:'One-Look-PLL-IMGs\\Gd.png', algorithm:"R U R' U' D R2 U' R U' R' U R' U R2 D'"},
+    {name: 'Ja', type: 'adj-corner-swap', src:'One-Look-PLL-IMGs\\Ja.png', algorithm:"x R2 F R F' R U2 r' U r U2"},
+    {name: 'Jb', type: 'adj-corner-swap', src:'One-Look-PLL-IMGs\\Jb.png', algorithm:"R U R' F' R U R' U' R' F R2 U' R'"},
+    {name: 'Ra', type: 'adj-corner-swap', src:'One-Look-PLL-IMGs\\Ra.png', algorithm:"R U' R' U' R U R D R' U' R D' R' U2 R'"},
+    {name: 'Rb', type: 'adj-corner-swap', src:'One-Look-PLL-IMGs\\Rb.png', algorithm:"R2 F R U R U' R' F' R U2 R' U2 R"},
+    {name: 'T', type: 'adj-corner-swap', src:'One-Look-PLL-IMGs\\T.png', algorithm:"R U R' U' R' F R2 U' R' U' R U R' F'"},
+    {name: 'Na', type: 'diag-corner-swap', src:'One-Look-PLL-IMGs\\Na.png', algorithm:"R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R"},
+    {name: 'Nb', type: 'diag-corner-swap', src:'One-Look-PLL-IMGs\\Nb.png', algorithm:"R' U R U' R' F' U' F R U R' F R' F' R U' R"},
+    {name: 'V', type: 'diag-corner-swap', src:'One-Look-PLL-IMGs\\V.png', algorithm:"R' U R' U' y R' F' R2 U' R' U R' F R F"},
+    {name: 'Y', type: 'diag-corner-swap', src:'One-Look-PLL-IMGs\\Y.png', algorithm:"F R U' R' U' R U R' F' R U R' U' R' F R F'"},
+    {name: 'Aa', type: 'corners-only', src:'One-Look-PLL-IMGs\\Aa.png', algorithm:"x R' U R' D2 R U' R' D2 R2"},
+    {name: 'Ab', type: 'corners-only', src:'One-Look-PLL-IMGs\\Ab.png', algorithm:"x R2 D2 R U R' D2 R U' R"},
+    {name: 'E', type: 'corners-only', src:'One-Look-PLL-IMGs\\E.png', algorithm:"x' R U' R' D R U R' D' R U R' D R U' R' D'"},
+    {name: 'H', type: 'edges-only', src:'Two-Look-PLL-IMGs\\H.png', algorithm:"M2 U M2 U2 M2 U M2"},
+    {name: 'Ua', type: 'edges-only', src:'Two-Look-PLL-IMGs\\Ua.png', algorithm:"R U' R U R U R U' R' U' R2"},
+    {name: 'Ub', type: 'edges-only', src:'Two-Look-PLL-IMGs\\Ub.png', algorithm:"R2 U R U R' U' R' U' R' U R'"},
+    {name: 'Z', type: 'edges-only', src:'Two-Look-PLL-IMGs\\Z.png', algorithm:"M2 U M2 U M' U2 M2 U2 M' U2"},
+];
+
+const oneLookPLLAlgorithmsTypes = ['adj-corner-swap', 'diag-corner-swap', 'corners-only', 'edges-only'];

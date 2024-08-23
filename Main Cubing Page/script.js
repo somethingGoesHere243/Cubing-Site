@@ -377,6 +377,7 @@ if (clearRecordsBtn) {
 const twoLookOLLContainer = document.getElementById('2-look-oll');
 const twoLookPLLContainer = document.getElementById('2-look-pll');
 const oneLookOLLContainer = document.getElementById('1-look-oll');
+const oneLookPLLContainer = document.getElementById('1-look-pll');
 
 let typesToDisplay = [];
 
@@ -444,6 +445,22 @@ if (oneLookOLLContainer) {
                 typesToDisplay.splice(typesToDisplay.indexOf(type), 1);
             }
             displayAlgs(oneLookOLLContainer, oneLookOLLAlgorithms);
+        })
+    }) 
+}
+
+if (oneLookPLLContainer) {
+    displayAlgs(oneLookPLLContainer, oneLookPLLAlgorithms); 
+    // Add event listeners to filter system
+    oneLookPLLAlgorithmsTypes.forEach(type => {
+        const checkBox = document.getElementById(type);
+        checkBox.addEventListener('click' , () => {
+            if (checkBox.checked) {
+                typesToDisplay.unshift(type);
+            } else {
+                typesToDisplay.splice(typesToDisplay.indexOf(type), 1);
+            }
+            displayAlgs(oneLookPLLContainer, oneLookPLLAlgorithms);
         })
     }) 
 }
