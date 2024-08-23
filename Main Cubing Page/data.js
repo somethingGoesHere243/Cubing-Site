@@ -1,3 +1,5 @@
+// Data for algorithm pages
+
 const twoLookOLLAlgorithms = [
     {name: 'Dot', type: 'edges', src:'Two-Look-OLL-IMGs\\Dot.png', algorithm:"F R U R' U' F' f R U R' U' f'"},
     {name: 'I Shape', type: 'edges', src:'Two-Look-OLL-IMGs\\I-Shape.png', algorithm:"F R U R' U' F'"},
@@ -111,3 +113,17 @@ const oneLookPLLAlgorithms = [
 ];
 
 const oneLookPLLAlgorithmsTypes = ['adj-corner-swap', 'diag-corner-swap', 'corners-only', 'edges-only'];
+
+// Data for solver page
+
+const validEdges = [
+    '01', '10', '02', '20', '03', '30', '04', '40',
+    '14', '41', '12', '21', '23', '32', '34', '43',
+    '51', '15', '52', '25', '53', '35', '54', '45'
+]
+
+const validCorners = [
+    '014', '021', '032', '043', '541', '512', '523', '534',
+    '140', '210', '320', '430', '415', '125', '235', '345',
+    '401', '102', '203', '304', '154', '251', '352', '453'
+]

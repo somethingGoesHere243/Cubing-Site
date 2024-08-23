@@ -494,6 +494,48 @@ const getScramble = () => {
     return scramble
 }
 
+// Function to retrieve edges of a given face
+const getEdges = (face) => {
+    return [face[1], face[3], face[5], face[7]];
+}
+
+// Function to retrieve corners of a given face
+const getCorners = (face) => {
+    return [face[0], face[2], face[6], face[8]];
+}
+
+// Function to retrieve edge pieces of a given scramble
+const getEdgePieces = (scramble) => {
+    return [
+        '' + scramble[0][1] + scramble[4][1],
+        '' + scramble[0][3] + scramble[1][1],
+        '' + scramble[0][5] + scramble[3][1],
+        '' + scramble[0][7] + scramble[2][1],
+        '' + scramble[1][3] + scramble[4][5],
+        '' + scramble[1][5] + scramble[2][3],
+        '' + scramble[2][5] + scramble[3][3],
+        '' + scramble[3][5] + scramble[4][3],
+        '' + scramble[5][1] + scramble[2][7],
+        '' + scramble[5][3] + scramble[1][7],
+        '' + scramble[5][5] + scramble[3][7],
+        '' + scramble[5][7] + scramble[4][7],
+    ]
+}
+
+// Function to retrieve corner pieces of a given scramble
+const getCornerPieces = (scramble) => {
+    return [
+        '' + scramble[0][0] + scramble[1][0] + scramble[4][2],
+        '' + scramble[0][2] + scramble[4][0] + scramble[3][2],
+        '' + scramble[0][6] + scramble[2][0] + scramble[1][2],
+        '' + scramble[0][8] + scramble[3][0] + scramble[2][2],
+        '' + scramble[1][6] + scramble[5][6] + scramble[4][8],
+        '' + scramble[1][8] + scramble[2][6] + scramble[5][0],
+        '' + scramble[2][8] + scramble[3][6] + scramble[5][2],
+        '' + scramble[3][8] + scramble[4][6] + scramble[5][8],
+    ]
+}
+
 // Function to rotate the up face of the cube 90deg clockwise
 const rotateU = (scramble) => {
     // Edit up face
@@ -644,9 +686,186 @@ const rotateL = (scramble) => {
     scramble[2][8] = upFace[8];
 }
 
+// Function to solve the white cross on a given scramble
+const solveCross = (scramble) => {
+    solution = '';
+    // First get all white edges (number 1) onto the yellow face
+    let yellowEdges = getEdges(scramble[3]);
+    while (!yellowEdges.every(edge => edge === 1)) {
+        // Check red face for white edges
+        if (getEdges(scramble[0]).includes(1)) {
+            // Move edge onto yellow face
+            while (scramble[3][1] === 1) {
+                rotateD(scramble);
+                solution += 'D ';
+            }
+            while (scramble[0][7] !== 1) {
+                rotateR(scramble);
+                solution += 'R ';
+            }
+            while (scramble[3][3] === 1) {
+                rotateD(scramble);
+                solution += 'D ';
+            }
+            rotateF(scramble);
+            solution += 'F ';
+        }
+        // Check Green Face
+        else if (getEdges(scramble[2]).includes(1)) {
+            while (scramble[3][3] === 1) {
+                rotateD(scramble);
+                solution += 'D ';
+            }
+            while (scramble[2][7] !== 1) {
+                rotateF(scramble);
+                solution += 'F ';
+            }
+            while (scramble[3][7] === 1) {
+                rotateD(scramble);
+                solution += 'D ';
+            }
+            rotateL(scramble);
+            solution += 'L ';
+        } 
+        // Check Blue Face
+        else if (getEdges(scramble[4]).includes(1)) {
+            while (scramble[3][5] === 1) {
+                rotateD(scramble);
+                solution += 'D ';
+            }
+            while (scramble[4][1] !== 1) {
+                rotateB(scramble);
+                solution += 'B ';
+            }
+            while (scramble[3][1] === 1) {
+                rotateD(scramble);
+                solution += 'D ';
+            }
+            rotateR(scramble);
+            solution += 'R ';
+        } 
+        // Check Orange Face
+        else if (getEdges(scramble[5]).includes(1)) {
+            while (scramble[3][7] === 1) {
+                rotateD(scramble);
+                solution += 'D ';
+            }
+            while (scramble[5][7] !== 1) {
+                rotateL(scramble);
+                solution += 'L ';
+            }
+            while (scramble[3][5] === 1) {
+                rotateD(scramble);
+                solution += 'D ';
+            }
+            rotateB(scramble);
+            solution += 'B ';
+        } 
+        // Check White Face
+        else {
+            while (scramble[3][3] === 1) {
+                rotateD(scramble);
+                solution += 'D ';
+            }
+            while (scramble[1][5] !== 1) {
+                rotateU(scramble);
+                solution += 'U ';
+            }
+            rotateF(scramble);
+            rotateF(scramble);
+            solution += 'F F ';
+        }
+        yellowEdges = getEdges(scramble[3]);
+    }
+    // Now rotate all white edges to correct spot on white face
+    while (scramble[0][5] !== 0) {
+        rotateD(scramble);
+        solution += 'D ';
+    }
+    rotateR(scramble);
+    rotateR(scramble);
+    solution += 'R R ';
+    while (scramble[2][5] !== 2 || scramble[3][3] !== 1) {
+        rotateD(scramble);
+        solution += 'D ';
+    }
+    rotateF(scramble);
+    rotateF(scramble);
+    solution += 'F F ';
+    while (scramble[5][5] !== 5 || scramble[3][7] !== 1) {
+        rotateD(scramble);
+        solution += 'D ';
+    }
+    rotateL(scramble);
+    rotateL(scramble);
+    solution += 'L L ';
+    while (scramble[4][3] !== 4 || scramble[3][5] !== 1) {
+        rotateD(scramble);
+        solution += 'D ';
+    }
+    rotateB(scramble);
+    rotateB(scramble);
+    solution += 'B B ';
+
+    return solution
+}
+
 // Function to solve a given scramble and output the steps taken to solve
 const solve = (scramble) => {
+    // Check if scramble has right amount of each color/sticker
+    const edgeCounts = [0, 0, 0, 0, 0, 0];
+    const cornerCounts = [0, 0, 0, 0, 0, 0];
+    for (let i=0; i<6; i++) {
+        for (const edge of getEdges(scramble[i])) {
+            edgeCounts[edge] += 1
+        }
+        for (const corner of getCorners(scramble[i])) {
+            cornerCounts[corner] += 1
+        }
+    }
+    if (!edgeCounts.every(num => num === 4) || !cornerCounts.every(num => num === 4)) {
+        alert('Scramble Invalid');
+        return;
+    } 
+    // Check if all pieces of the cube are valid
+    const seenEdges = [];
+    const seenCorners = [];
+    let isValid = true;
+    getEdgePieces(scramble).forEach(edge => {
+        if (isValid) {
+            if (seenEdges.includes(edge)) {
+                alert('Scramble Invalid');
+                isValid = false;
+            } else if (!validEdges.includes(edge)) {
+                alert('Scramble Invalid');
+                isValid = false;
+            } else {
+                seenEdges.push(edge);
+                seenEdges.push(edge[1] + edge[0]);
+            }
+        }
+    })
+    getCornerPieces(scramble).forEach(corner => {
+        if (isValid) {
+            if (seenCorners.includes(corner)) {
+                alert('Scramble Invalid');
+                isValid = false;
+            } else if (!validCorners.includes(corner)) {
+                alert('Scramble Invalid');
+                isValid = false;
+            } else {
+                seenCorners.push(corner);
+                seenCorners.push(corner[1] + corner[2] + corner[0]);
+                seenCorners.push(corner[2] + corner[0] + corner[1]);
+            }
+        }
+    })
 
+    if (isValid) {
+        // Scramble is valid so begin solving
+        const crossSolution = solveCross(scramble);
+        return crossSolution
+    }
 } 
 
 // Add event listeners to each sticker allowing them to change color when clicked
@@ -667,12 +886,17 @@ const solve = (scramble) => {
 // Add event listener to solve button to read the given scramble then solve it
 solveBtn.addEventListener('click', () => {
     const currCubePosn = getScramble();
-    let solution = currCubePosn;
-    rotateF(solution);
-    rotateU(solution);
-    rotateB(solution);
-    rotateU(solution);
-    rotateR(solution);
-    rotateR(solution);
+    // For testing purposes create a random scramble to solve
+    let randScramble = '';
+    for (let i=0; i<20; i++) {
+        const faces = ['B', 'D', 'F', 'L', 'R', 'U'];
+        const moves=[rotateB, rotateD, rotateF, rotateL, rotateR, rotateU];
+        const randomIndex = Math.floor(Math.random() * 6)
+        moves[randomIndex](currCubePosn);
+        randScramble += faces[randomIndex] + ' ';
+    }
+    console.log(randScramble);
+    const solution = solve(currCubePosn);
+    console.log(currCubePosn);
     console.log(solution);
 })
