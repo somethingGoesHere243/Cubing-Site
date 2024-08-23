@@ -686,6 +686,19 @@ const rotateL = (scramble) => {
     scramble[2][8] = upFace[8];
 }
 
+// Function to rotate cube 90deg in x direction
+const rotateX = (scramble) => {
+    const temp = [...scramble]
+    scramble[1] = temp[2];
+    scramble[2] = temp[3];
+    scramble[3] = temp[4];
+    scramble[4] = temp[1];
+    const rightFace = [...scramble[0]];
+    scramble[0] = [rightFace[6], rightFace[3], rightFace[0], rightFace[7], rightFace[4], rightFace[1], rightFace[8], rightFace[5], rightFace[2]];
+    const leftFace = [...scramble[5]];
+    scramble[5] = [leftFace[2], leftFace[5], leftFace[8], leftFace[1], leftFace[4], leftFace[7], leftFace[0], leftFace[3], leftFace[6]];
+}
+
 // Function to solve the white cross on a given scramble
 const solveCross = (scramble) => {
     solution = '';
@@ -810,6 +823,231 @@ const solveCross = (scramble) => {
     return solution
 }
 
+// Function to move a specified corner out of the bottom layer
+const moveCornerToTop = (scramble, corner) => {
+    solution = ''
+    let cornerPieces = getCornerPieces(scramble);
+    cornerIndex = Math.max(cornerPieces.indexOf(corner), cornerPieces.indexOf(corner[1] + corner[2] + corner[0]), cornerPieces.indexOf(corner[2] + corner[0] + corner[1]));
+    if (cornerIndex === 1) {
+        rotateR(scramble);
+        rotateR(scramble);
+        rotateR(scramble);
+        rotateU(scramble);
+        rotateU(scramble);
+        rotateU(scramble);
+        rotateR(scramble);
+        solution += 'R R R U U U R ';
+    } else if (cornerIndex === 3) {
+        rotateR(scramble);
+        rotateU(scramble);
+        rotateR(scramble);
+        rotateR(scramble);
+        rotateR(scramble);
+        solution += 'R U R R R ';
+    } else if (cornerIndex === 6) {
+        rotateL(scramble);
+        rotateL(scramble);
+        rotateL(scramble);
+        rotateU(scramble);
+        rotateU(scramble);
+        rotateU(scramble);
+        rotateL(scramble);
+        solution += 'L L L U U U L ';
+    } else if (cornerIndex === 7) {
+        rotateL(scramble);
+        rotateU(scramble);
+        rotateL(scramble);
+        rotateL(scramble);
+        rotateL(scramble);
+        solution += 'L U L L L ';
+    }
+    return solution;
+}
+
+// Function to finish solving white layer
+const solveTopLayer = (scramble) => {
+    solution = ''
+    let cornerPieces = getCornerPieces(scramble);
+    // Check each corner piece and solve if needed
+    if (cornerPieces[1] !== '021') {
+        // Move corner out of white layer if needed
+        solution += moveCornerToTop(scramble, '021');
+        cornerIndex = Math.max(cornerPieces.indexOf('021'), cornerPieces.indexOf('210'), cornerPieces.indexOf('102'));
+        // Place corner into correct place
+        while (cornerIndex !== 0) {
+            rotateU(scramble);
+            solution += 'U '
+            cornerPieces = getCornerPieces(scramble);
+            cornerIndex = Math.max(cornerPieces.indexOf('021'), cornerPieces.indexOf('210'), cornerPieces.indexOf('102'));
+        }
+        if (scramble[1][0] === 1) {
+            rotateR(scramble);
+            rotateR(scramble);
+            rotateR(scramble);
+            rotateU(scramble);
+            rotateR(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+
+            solution += 'R R R U R U U '
+        }
+        if (scramble[1][0] === 2) {
+            rotateB(scramble);
+            rotateU(scramble);
+            rotateB(scramble);
+            rotateB(scramble);
+            rotateB(scramble);
+
+            solution += 'B U B B B '
+        } else if (scramble[1][0] === 0) {
+            rotateR(scramble);
+            rotateR(scramble);
+            rotateR(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateR(scramble);
+
+            solution += 'R R R U U U R '
+        }
+    }
+    cornerPieces = getCornerPieces(scramble);
+    if (cornerPieces[3] !== '014') {
+        // Move corner out of white layer if needed
+        solution += moveCornerToTop(scramble, '014');
+        cornerIndex = Math.max(cornerPieces.indexOf('014'), cornerPieces.indexOf('140'), cornerPieces.indexOf('401'));
+        // Place corner into correct place
+        while (cornerIndex !== 2) {
+            rotateU(scramble);
+            solution += 'U '
+            cornerPieces = getCornerPieces(scramble);
+            cornerIndex = Math.max(cornerPieces.indexOf('014'), cornerPieces.indexOf('140'), cornerPieces.indexOf('401'));
+        }
+        if (scramble[1][2] === 1) {
+            rotateR(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateR(scramble);
+            rotateR(scramble);
+            rotateR(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+
+            solution += 'R U U R R R U U U '
+        }
+        if (scramble[1][2] === 0) {
+            rotateR(scramble);
+            rotateU(scramble);
+            rotateR(scramble);
+            rotateR(scramble);
+            rotateR(scramble);
+
+            solution += 'R U R R R '
+        } else if (scramble[1][2] === 4) {
+            rotateF(scramble);
+            rotateF(scramble);
+            rotateF(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateF(scramble);
+
+            solution += 'F F F U U U F '
+        }
+    }
+    cornerPieces = getCornerPieces(scramble);
+    if (cornerPieces[6] !== '415') {
+        // Move corner out of white layer if needed
+        solution += moveCornerToTop(scramble, '415');
+        cornerIndex = Math.max(cornerPieces.indexOf('415'), cornerPieces.indexOf('154'), cornerPieces.indexOf('541'));
+        // Place corner into correct place
+        while (cornerIndex !== 5) {
+            rotateU(scramble);
+            solution += 'U '
+            cornerPieces = getCornerPieces(scramble);
+            cornerIndex = Math.max(cornerPieces.indexOf('415'), cornerPieces.indexOf('154'), cornerPieces.indexOf('541'));
+        }
+        if (scramble[1][8] === 1) {
+            rotateL(scramble);
+            rotateL(scramble);
+            rotateL(scramble);
+            rotateU(scramble);
+            rotateL(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+
+            solution += 'L L L U L U U '
+        }
+        if (scramble[1][8] === 4) {
+            rotateF(scramble);
+            rotateU(scramble);
+            rotateF(scramble);
+            rotateF(scramble);
+            rotateF(scramble);
+
+            solution += 'F U F F F '
+        } else if (scramble[1][8] === 5) {
+            rotateL(scramble);
+            rotateL(scramble);
+            rotateL(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateL(scramble);
+
+            solution += 'L L L U U U L '
+        }
+    }
+    cornerPieces = getCornerPieces(scramble);
+    if (cornerPieces[7] !== '125') {
+        // Move corner out of white layer if needed
+        solution += moveCornerToTop(scramble, '125');
+        cornerIndex = Math.max(cornerPieces.indexOf('125'), cornerPieces.indexOf('251'), cornerPieces.indexOf('512'));
+        // Place corner into correct place
+        while (cornerIndex !== 4) {
+            rotateU(scramble);
+            solution += 'U '
+            cornerPieces = getCornerPieces(scramble);
+            cornerIndex = Math.max(cornerPieces.indexOf('125'), cornerPieces.indexOf('251'), cornerPieces.indexOf('512'));;
+        }
+        if (scramble[1][6] === 1) {
+            rotateL(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateL(scramble);
+            rotateL(scramble);
+            rotateL(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+
+            solution += 'L U U L L L U U U '
+        }
+        if (scramble[1][6] === 2) {
+            rotateB(scramble);
+            rotateB(scramble);
+            rotateB(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateU(scramble);
+            rotateB(scramble);
+
+            solution += 'B B B U U U B '
+        } else if (scramble[1][6] === 5) {
+            rotateL(scramble);
+            rotateU(scramble);
+            rotateL(scramble);
+            rotateL(scramble);
+            rotateL(scramble);
+
+            solution += 'L U L L L '
+        }
+    }
+
+    return solution
+}
+
 // Function to solve a given scramble and output the steps taken to solve
 const solve = (scramble) => {
     // Check if scramble has right amount of each color/sticker
@@ -864,7 +1102,10 @@ const solve = (scramble) => {
     if (isValid) {
         // Scramble is valid so begin solving
         const crossSolution = solveCross(scramble);
-        return crossSolution
+        rotateX(scramble);
+        rotateX(scramble);
+        const topLayerSolution = solveTopLayer(scramble);
+        return 'Cross: ' + crossSolution + '\n Top Layer: ' + topLayerSolution;
     }
 } 
 
