@@ -1037,6 +1037,32 @@ const solveSecondLayer = (scramble) => {
     return solution;
 }
 
+// Function to correctly format a given algorithm
+const formatAlg = (algorithm) => {
+    let formattedAlg = '';
+    let currentIndex = 0;
+    while (currentIndex < algorithm.length) {
+        const currentLetter = algorithm[currentIndex];
+        let numberOfRepeats = 1;
+        // Increment current index by 2 as there should be spaces between each letter
+        currentIndex += 2;
+        while (currentLetter === algorithm[currentIndex]) {
+            numberOfRepeats += 1;
+            currentIndex += 2;
+        }
+        // After 4 of the same move we are repeating ourselves
+        numberOfRepeats = numberOfRepeats % 4;
+        if (numberOfRepeats === 1) {
+            formattedAlg += currentLetter + ' ';
+        } else if (numberOfRepeats === 2) {
+            formattedAlg += currentLetter + '2 ';
+        } else if (numberOfRepeats === 3) {
+            formattedAlg += currentLetter + "' ";
+        }
+    }
+    return formattedAlg;
+}
+
 // Function to solve a given scramble and output the steps taken to solve
 const solve = (scramble) => {
     // Check if scramble has right amount of each color/sticker
@@ -1095,7 +1121,7 @@ const solve = (scramble) => {
         rotateX(scramble);
         const topLayerSolution = solveTopLayer(scramble);
         const secondLayerSolution = solveSecondLayer(scramble);
-        return 'Cross: ' + crossSolution + '\nFirst Layer: X2 ' + topLayerSolution + '\nSecond Layer: ' + secondLayerSolution;
+        return 'Cross: ' + formatAlg(crossSolution) + '\nFirst Layer: X2 ' + formatAlg(topLayerSolution) + '\nSecond Layer: ' + formatAlg(secondLayerSolution);
     }
 } 
 
