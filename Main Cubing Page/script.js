@@ -998,7 +998,7 @@ const solveSecondLayer = (scramble) => {
             if (scramble[1][3] === 5) {
                 solution += performAlg(scramble, "B U B U B U' B' U' B' ");
                 solvedEdges.push(11);
-            } else if (scramble[1][5] === 0) {
+            } else if (scramble[1][3] === 0) {
                 solution += performAlg(scramble, "B' U' B' U' B' U B U B ");
                 solvedEdges.push(0);
             }
@@ -1152,7 +1152,7 @@ solveBtn.addEventListener('click', () => {
         moves[randomIndex](currCubePosn);
         randScramble += faces[randomIndex] + ' ';
     }
-    console.log(randScramble);
+    console.log(formatAlg(randScramble));
     const solution = solve(currCubePosn);
     console.log(currCubePosn);
     console.log(solution);
