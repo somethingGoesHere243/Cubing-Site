@@ -699,6 +699,33 @@ const rotateX = (scramble) => {
     scramble[5] = [leftFace[2], leftFace[5], leftFace[8], leftFace[1], leftFace[4], leftFace[7], leftFace[0], leftFace[3], leftFace[6]];
 }
 
+// Function to perform an inputted algorithm to a given scramble
+const performAlg = (scramble, algorithm) => {
+    let moves = '';
+    // Need to add wide turns, slices and other rotations
+    let rotations = {'U': rotateU, 'D': rotateD, 'R': rotateR, 'L': rotateL, 'F': rotateF, 'B': rotateB, 'x': rotateX};
+    for (let i=0; i<algorithm.length; i++) {
+        // Check if given character corresponds to a face
+        let currMove = algorithm[i];
+        let rotation = rotations[currMove]
+        if (rotation) {
+            rotation(scramble);
+            moves += currMove + " ";
+            // Check if need to do more than one rotation
+            if (algorithm[i+1] === '2') {
+                rotation(scramble);
+                moves += currMove + " ";
+            } else if (algorithm[i+1] === "'") {
+                rotation(scramble);
+                moves += currMove + " ";
+                rotation(scramble);
+                moves += currMove + " ";
+            }
+        }
+    }
+    return moves;
+}
+
 // Function to solve the white cross on a given scramble
 const solveCross = (scramble) => {
     solution = '';
@@ -829,37 +856,13 @@ const moveCornerToTop = (scramble, corner) => {
     let cornerPieces = getCornerPieces(scramble);
     cornerIndex = Math.max(cornerPieces.indexOf(corner), cornerPieces.indexOf(corner[1] + corner[2] + corner[0]), cornerPieces.indexOf(corner[2] + corner[0] + corner[1]));
     if (cornerIndex === 1) {
-        rotateR(scramble);
-        rotateR(scramble);
-        rotateR(scramble);
-        rotateU(scramble);
-        rotateU(scramble);
-        rotateU(scramble);
-        rotateR(scramble);
-        solution += 'R R R U U U R ';
+        solution += performAlg(scramble, "R' U' R ");
     } else if (cornerIndex === 3) {
-        rotateR(scramble);
-        rotateU(scramble);
-        rotateR(scramble);
-        rotateR(scramble);
-        rotateR(scramble);
-        solution += 'R U R R R ';
+        solution += performAlg(scramble, "R U R' ");
     } else if (cornerIndex === 6) {
-        rotateL(scramble);
-        rotateL(scramble);
-        rotateL(scramble);
-        rotateU(scramble);
-        rotateU(scramble);
-        rotateU(scramble);
-        rotateL(scramble);
-        solution += 'L L L U U U L ';
+        solution += performAlg(scramble, "L' U' L ");
     } else if (cornerIndex === 7) {
-        rotateL(scramble);
-        rotateU(scramble);
-        rotateL(scramble);
-        rotateL(scramble);
-        rotateL(scramble);
-        solution += 'L U L L L ';
+        solution += performAlg(scramble, "L U L' ");
     }
     return solution;
 }
@@ -872,7 +875,8 @@ const solveTopLayer = (scramble) => {
     if (cornerPieces[1] !== '021') {
         // Move corner out of white layer if needed
         solution += moveCornerToTop(scramble, '021');
-        cornerIndex = Math.max(cornerPieces.indexOf('021'), cornerPieces.indexOf('210'), cornerPieces.indexOf('102'));
+        cornerPieces = getCornerPieces(scramble);
+        let cornerIndex = Math.max(cornerPieces.indexOf('021'), cornerPieces.indexOf('210'), cornerPieces.indexOf('102'));  
         // Place corner into correct place
         while (cornerIndex !== 0) {
             rotateU(scramble);
@@ -881,41 +885,19 @@ const solveTopLayer = (scramble) => {
             cornerIndex = Math.max(cornerPieces.indexOf('021'), cornerPieces.indexOf('210'), cornerPieces.indexOf('102'));
         }
         if (scramble[1][0] === 1) {
-            rotateR(scramble);
-            rotateR(scramble);
-            rotateR(scramble);
-            rotateU(scramble);
-            rotateR(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-
-            solution += 'R R R U R U U '
+            solution += performAlg(scramble, "R' U R U2");
         }
         if (scramble[1][0] === 2) {
-            rotateB(scramble);
-            rotateU(scramble);
-            rotateB(scramble);
-            rotateB(scramble);
-            rotateB(scramble);
-
-            solution += 'B U B B B '
+            solution += performAlg(scramble,"B U B' ");
         } else if (scramble[1][0] === 0) {
-            rotateR(scramble);
-            rotateR(scramble);
-            rotateR(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateR(scramble);
-
-            solution += 'R R R U U U R '
+            solution += performAlg(scramble,"R' U' R ");
         }
+        cornerPieces = getCornerPieces(scramble);
     }
-    cornerPieces = getCornerPieces(scramble);
     if (cornerPieces[3] !== '014') {
         // Move corner out of white layer if needed
         solution += moveCornerToTop(scramble, '014');
-        cornerIndex = Math.max(cornerPieces.indexOf('014'), cornerPieces.indexOf('140'), cornerPieces.indexOf('401'));
+        let cornerIndex = Math.max(cornerPieces.indexOf('014'), cornerPieces.indexOf('140'), cornerPieces.indexOf('401'));
         // Place corner into correct place
         while (cornerIndex !== 2) {
             rotateU(scramble);
@@ -924,43 +906,19 @@ const solveTopLayer = (scramble) => {
             cornerIndex = Math.max(cornerPieces.indexOf('014'), cornerPieces.indexOf('140'), cornerPieces.indexOf('401'));
         }
         if (scramble[1][2] === 1) {
-            rotateR(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateR(scramble);
-            rotateR(scramble);
-            rotateR(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-
-            solution += 'R U U R R R U U U '
+            solution += performAlg(scramble, "R U2 R' U' ");
         }
         if (scramble[1][2] === 0) {
-            rotateR(scramble);
-            rotateU(scramble);
-            rotateR(scramble);
-            rotateR(scramble);
-            rotateR(scramble);
-
-            solution += 'R U R R R '
+            solution += performAlg(scramble, "R U R' ");
         } else if (scramble[1][2] === 4) {
-            rotateF(scramble);
-            rotateF(scramble);
-            rotateF(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateF(scramble);
-
-            solution += 'F F F U U U F '
+            solution += performAlg(scramble, "F' U' F ");
         }
+        cornerPieces = getCornerPieces(scramble);
     }
-    cornerPieces = getCornerPieces(scramble);
     if (cornerPieces[6] !== '415') {
         // Move corner out of white layer if needed
         solution += moveCornerToTop(scramble, '415');
-        cornerIndex = Math.max(cornerPieces.indexOf('415'), cornerPieces.indexOf('154'), cornerPieces.indexOf('541'));
+        let cornerIndex = Math.max(cornerPieces.indexOf('415'), cornerPieces.indexOf('154'), cornerPieces.indexOf('541'));
         // Place corner into correct place
         while (cornerIndex !== 5) {
             rotateU(scramble);
@@ -969,41 +927,19 @@ const solveTopLayer = (scramble) => {
             cornerIndex = Math.max(cornerPieces.indexOf('415'), cornerPieces.indexOf('154'), cornerPieces.indexOf('541'));
         }
         if (scramble[1][8] === 1) {
-            rotateL(scramble);
-            rotateL(scramble);
-            rotateL(scramble);
-            rotateU(scramble);
-            rotateL(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-
-            solution += 'L L L U L U U '
+            solution += performAlg(scramble, "L' U L U2");
         }
         if (scramble[1][8] === 4) {
-            rotateF(scramble);
-            rotateU(scramble);
-            rotateF(scramble);
-            rotateF(scramble);
-            rotateF(scramble);
-
-            solution += 'F U F F F '
+            solution += performAlg(scramble, "F U F' ");
         } else if (scramble[1][8] === 5) {
-            rotateL(scramble);
-            rotateL(scramble);
-            rotateL(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateL(scramble);
-
-            solution += 'L L L U U U L '
+            solution += performAlg(scramble, "L' U' L ");
         }
+        cornerPieces = getCornerPieces(scramble);
     }
-    cornerPieces = getCornerPieces(scramble);
     if (cornerPieces[7] !== '125') {
         // Move corner out of white layer if needed
         solution += moveCornerToTop(scramble, '125');
-        cornerIndex = Math.max(cornerPieces.indexOf('125'), cornerPieces.indexOf('251'), cornerPieces.indexOf('512'));
+        let cornerIndex = Math.max(cornerPieces.indexOf('125'), cornerPieces.indexOf('251'), cornerPieces.indexOf('512'));
         // Place corner into correct place
         while (cornerIndex !== 4) {
             rotateU(scramble);
@@ -1012,40 +948,93 @@ const solveTopLayer = (scramble) => {
             cornerIndex = Math.max(cornerPieces.indexOf('125'), cornerPieces.indexOf('251'), cornerPieces.indexOf('512'));;
         }
         if (scramble[1][6] === 1) {
-            rotateL(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateL(scramble);
-            rotateL(scramble);
-            rotateL(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-
-            solution += 'L U U L L L U U U '
+            solution += performAlg(scramble, "L U2 L' U' ");
         }
         if (scramble[1][6] === 2) {
-            rotateB(scramble);
-            rotateB(scramble);
-            rotateB(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateU(scramble);
-            rotateB(scramble);
-
-            solution += 'B B B U U U B '
+            solution += performAlg(scramble, "B' U' B ");
         } else if (scramble[1][6] === 5) {
-            rotateL(scramble);
-            rotateU(scramble);
-            rotateL(scramble);
-            rotateL(scramble);
-            rotateL(scramble);
-
-            solution += 'L U L L L '
+            solution += performAlg(scramble, "L U L' ");
         }
     }
 
     return solution
+}
+
+// Function to solve second layer
+const solveSecondLayer = (scramble) => {
+    solution = '';
+    // Store edge index of any edges which have been solved
+    const solvedEdges = [];
+    // Check if any edges already solved
+    const currEdgePieces = getEdgePieces(scramble);
+    if (currEdgePieces[0] === '02') {solvedEdges.push(0)};
+    if (currEdgePieces[3] === '04') {solvedEdges.push(3)};
+    if (currEdgePieces[8] === '54') {solvedEdges.push(8)};
+    if (currEdgePieces[11] === '52') {solvedEdges.push(11)};
+    // Keep track of number of times top face of cube has been turned since last edge was solved
+    let topFaceTurns = 0;
+    while (solvedEdges.length < 4) {
+        // Check if there are any edges positioned above their respective slot
+        // If there are then insert them
+        if (scramble[2][3] === 4 && scramble[1][5] !== 3) {
+            if (scramble[1][5] === 0) {
+                solution += performAlg(scramble, "F U F U F U' F' U' F' ");
+                solvedEdges.push(3);
+            } else if (scramble[1][5] === 5) {
+                solution += performAlg(scramble, "F' U' F' U' F' U F U F ");
+                solvedEdges.push(8);
+            }
+            topFaceTurns = 0;
+        } else if (scramble[0][3] === 0 && scramble[1][1] !== 3) {
+            if (scramble[1][1] === 2) {
+                solution += performAlg(scramble, "R U R U R U' R' U' R' ");
+                solvedEdges.push(0);
+            } else if (scramble[1][1] === 4) {
+                solution += performAlg(scramble, "R' U' R' U' R' U R U R ");
+                solvedEdges.push(3);
+            }
+            topFaceTurns = 0;
+        } else if (scramble[4][5] === 2 && scramble[1][3] !== 3) {
+            if (scramble[1][3] === 5) {
+                solution += performAlg(scramble, "B U B U B U' B' U' B' ");
+                solvedEdges.push(11);
+            } else if (scramble[1][5] === 0) {
+                solution += performAlg(scramble, "B' U' B' U' B' U B U B ");
+                solvedEdges.push(0);
+            }
+            topFaceTurns = 0;
+        } else if (scramble[5][3] === 5 && scramble[1][7] !== 3) {
+            if (scramble[1][7] === 4) {
+                solution += performAlg(scramble, "L U L U L U' L' U' L' ");
+                solvedEdges.push(8);
+            } else if (scramble[1][7] === 2) {
+                solution += performAlg(scramble, "L' U' L' U' L' U L U L ");
+                solvedEdges.push(11);
+            }
+            topFaceTurns = 0;
+        } else {
+            rotateU(scramble);
+            solution += 'U ';
+            topFaceTurns += 1;
+            // If topFaceTurns reaches 4 then there are currently no middle layer edges in the top layer
+            if (topFaceTurns === 4) {
+                let unsolvedEdges = [0,3,8,11].filter(num => !solvedEdges.includes(num));
+                // Pull one of the (non-yellow) edges up to the top layer
+                let edgePieces = getEdgePieces(scramble); 
+                if (unsolvedEdges.includes(0) && !edgePieces[0].includes(3)) {
+                    solution += performAlg(scramble, "R U R U R U' R' U' R' ");
+                } else if (unsolvedEdges.includes(3) && !edgePieces[3].includes(3)) {
+                    solution += performAlg(scramble, "R' U' R' U' R' U R U R ");
+                } else if (unsolvedEdges.includes(8) && !edgePieces[8].includes(3)) {
+                    solution += performAlg(scramble, "L U L U L U' L' U' L' ");
+                } else {
+                    solution += performAlg(scramble, "L' U' L' U' L' U L U L ");
+                }
+                topFaceTurns = 0;
+            }
+        }
+    }
+    return solution;
 }
 
 // Function to solve a given scramble and output the steps taken to solve
@@ -1105,7 +1094,8 @@ const solve = (scramble) => {
         rotateX(scramble);
         rotateX(scramble);
         const topLayerSolution = solveTopLayer(scramble);
-        return 'Cross: ' + crossSolution + '\n Top Layer: ' + topLayerSolution;
+        const secondLayerSolution = solveSecondLayer(scramble);
+        return 'Cross: ' + crossSolution + '\nFirst Layer: X2 ' + topLayerSolution + '\nSecond Layer: ' + secondLayerSolution;
     }
 } 
 
