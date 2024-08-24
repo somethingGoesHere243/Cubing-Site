@@ -75,3 +75,18 @@ squarePieces.forEach(piece => {
         piece.innerText = newColorIndex;
     })
 });
+
+const printLayer = () => {
+    // Get locations of all yellow stickers in top layer
+    const isYellow = (sticker) => (sticker.innerText === '1') ? 1 : 0;
+    // Get array representing top layer of cube where 1 = yellow, 0 = non-yellow stickers
+    const yellowStickers = [
+        [isYellow(squarePieces[0]), isYellow(squarePieces[1]), isYellow(squarePieces[2]), isYellow(squarePieces[3]), isYellow(squarePieces[4]), isYellow(squarePieces[5]), isYellow(squarePieces[6]), isYellow(squarePieces[7]), isYellow(squarePieces[8])],
+        [isYellow(rightSidePieces[0]), isYellow(rightSidePieces[1]), isYellow(rightSidePieces[2])],
+        [isYellow(bottomSidePieces[2]), isYellow(bottomSidePieces[1]), isYellow(bottomSidePieces[0])],
+        [isYellow(leftSidePieces[2]), isYellow(leftSidePieces[1]), isYellow(leftSidePieces[0])],
+        [isYellow(topSidePieces[0]), isYellow(topSidePieces[1]), isYellow(topSidePieces[2])],
+    ];
+    return ', appearance: [[' + yellowStickers[0] + '],[' + yellowStickers[1] + '],[' + yellowStickers[2] + '],[' + yellowStickers[3] + '],[' + yellowStickers[4] + ']]';
+}
+

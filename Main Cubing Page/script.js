@@ -686,6 +686,70 @@ const rotateL = (scramble) => {
     scramble[2][8] = upFace[8];
 }
 
+// Function to rotate the M slice 90deg clockwise
+const rotateM = (scramble) => {
+    // Store up face
+    const upFace = [...scramble[1]];
+    // Edit up face
+    scramble[1][3] = scramble[4][3];
+    scramble[1][4] = scramble[4][4];
+    scramble[1][5] = scramble[4][5];
+    // Edit back face
+    scramble[4][3] = scramble[3][3];
+    scramble[4][4] = scramble[3][4];
+    scramble[4][5] = scramble[3][5];
+    // Edit down face
+    scramble[3][3] = scramble[2][3];
+    scramble[3][4] = scramble[2][4];
+    scramble[3][5] = scramble[2][5];
+    // Edit front face
+    scramble[2][3] = upFace[3];
+    scramble[2][4] = upFace[4];
+    scramble[2][5] = upFace[5];
+}
+
+// Function to rotate the S slice 90deg clockwise
+const rotateS = (scramble) => {
+    // Store up face
+    const upFace = [...scramble[1]];
+    // Edit up face
+    scramble[1][1] = scramble[5][3];
+    scramble[1][4] = scramble[5][4];
+    scramble[1][7] = scramble[5][5];
+    // Edit left face
+    scramble[5][3] = scramble[3][7];
+    scramble[5][4] = scramble[3][4];
+    scramble[5][5] = scramble[3][1];
+    // Edit down face
+    scramble[3][1] = scramble[0][3];
+    scramble[3][4] = scramble[0][4];
+    scramble[3][7] = scramble[0][5];
+    // Edit right face
+    scramble[0][3] = upFace[7];
+    scramble[0][4] = upFace[4];
+    scramble[0][5] = upFace[1];
+}
+
+// Function to perform a wide rotation on front face of 90deg clockwise
+const rotateWideF = (scramble) => {
+    rotateF(scramble);
+    rotateS(scramble);
+}
+
+// Function to perform a wide rotation on right face of 90deg clockwise
+const rotateWideR = (scramble) => {
+    rotateR(scramble);
+    rotateM(scramble);
+    rotateM(scramble);
+    rotateM(scramble);
+}
+
+// Function to perform a wide rotation on left face of 90deg clockwise
+const rotateWideL = (scramble) => {
+    rotateL(scramble);
+    rotateM(scramble);
+}
+
 // Function to rotate cube 90deg in x direction
 const rotateX = (scramble) => {
     const temp = [...scramble]
@@ -699,11 +763,37 @@ const rotateX = (scramble) => {
     scramble[5] = [leftFace[2], leftFace[5], leftFace[8], leftFace[1], leftFace[4], leftFace[7], leftFace[0], leftFace[3], leftFace[6]];
 }
 
+// Function to rotate cube 90deg in y direction
+const rotateY = (scramble) => {
+    const temp = [...scramble]
+    scramble[0] = temp[4];
+    scramble[2] = temp[0];
+    scramble[5] = temp[2];
+    scramble[4] = temp[5];
+    const upFace = [...scramble[0]];
+    scramble[1] = [upFace[6], upFace[3], upFace[0], upFace[7], upFace[4], upFace[1], upFace[8], upFace[5], upFace[2]];
+    const downFace = [...scramble[5]];
+    scramble[3] = [downFace[2], downFace[5], downFace[8], downFace[1], downFace[4], downFace[7], downFace[0], downFace[3], downFace[6]];
+}
+
+// Function to rotate a given layer of a cube 90deg
+const rotateLayer = (layer) => {
+    // Rotate face
+    const face = [...layer[0]];
+    layer[0] = [face[6], face[3], face[0], face[7], face[4], face[1], face[8], face[5], face[2]];
+    // Rotate edges of layer
+    const storedEdge = layer[1];
+    layer[1] = layer[4];
+    layer[4] = layer[3];
+    layer[3] = layer[2];
+    layer[2] = storedEdge;
+}
+
 // Function to perform an inputted algorithm to a given scramble
 const performAlg = (scramble, algorithm) => {
     let moves = '';
     // Need to add wide turns, slices and other rotations
-    let rotations = {'U': rotateU, 'D': rotateD, 'R': rotateR, 'L': rotateL, 'F': rotateF, 'B': rotateB, 'x': rotateX};
+    let rotations = {'U': rotateU, 'D': rotateD, 'R': rotateR, 'L': rotateL, 'F': rotateF, 'B': rotateB, 'M': rotateM, 'S': rotateS, 'r': rotateWideR, 'l': rotateWideL, 'f': rotateWideF, 'x': rotateX, 'y': rotateY,};
     for (let i=0; i<algorithm.length; i++) {
         // Check if given character corresponds to a face
         let currMove = algorithm[i];
@@ -1037,6 +1127,34 @@ const solveSecondLayer = (scramble) => {
     return solution;
 }
 
+// Function to Orient Last Layer of cube
+const solveOLL = (scramble) => {
+    let solution = '';
+    // Get locations of all yellow stickers in top layer
+    const isYellow = (sticker) => (sticker === 3) ? 1 : 0;
+    // Get array representing top layer of cube where 1 = yellow, 0 = non-yellow stickers
+    let yellowStickers = [
+        [isYellow(scramble[1][0]), isYellow(scramble[1][1]), isYellow(scramble[1][2]), isYellow(scramble[1][3]), isYellow(scramble[1][4]), isYellow(scramble[1][5]), isYellow(scramble[1][6]), isYellow(scramble[1][7]), isYellow(scramble[1][8])],
+        [isYellow(scramble[2][0]), isYellow(scramble[2][3]), isYellow(scramble[2][6])],
+        [isYellow(scramble[5][0]), isYellow(scramble[5][3]), isYellow(scramble[5][6])],
+        [isYellow(scramble[4][8]), isYellow(scramble[4][5]), isYellow(scramble[4][2])],
+        [isYellow(scramble[0][0]), isYellow(scramble[0][3]), isYellow(scramble[0][6])],
+    ];
+    let OLLCase = -1;
+    while (OLLCase === -1) {
+        OLLCase = oneLookOLLAlgorithms.find(alg => '' + alg['appearance'] === '' + yellowStickers) || -1;
+        if (OLLCase === -1) {
+            rotateLayer(yellowStickers);
+            rotateU(scramble);
+            solution += 'U '
+        }
+    }
+    rotateU(scramble);
+    rotateU(scramble);
+    rotateU(scramble);
+    return solution + 'U U U ' + performAlg(scramble, OLLCase['algorithm']);
+}
+
 // Function to correctly format a given algorithm
 const formatAlg = (algorithm) => {
     let formattedAlg = '';
@@ -1121,7 +1239,8 @@ const solve = (scramble) => {
         rotateX(scramble);
         const topLayerSolution = solveTopLayer(scramble);
         const secondLayerSolution = solveSecondLayer(scramble);
-        return 'Cross: ' + formatAlg(crossSolution) + '\nFirst Layer: X2 ' + formatAlg(topLayerSolution) + '\nSecond Layer: ' + formatAlg(secondLayerSolution);
+        const OLLSolution = solveOLL(scramble);
+        return 'Cross: ' + formatAlg(crossSolution) + '\nFirst Layer: X2 ' + formatAlg(topLayerSolution) + '\nSecond Layer: ' + formatAlg(secondLayerSolution) + '\nOLL: ' + formatAlg(OLLSolution);
     }
 } 
 
