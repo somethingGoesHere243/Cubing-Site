@@ -766,13 +766,15 @@ const rotateX = (scramble) => {
 // Function to rotate cube 90deg in y direction
 const rotateY = (scramble) => {
     const temp = [...scramble]
-    scramble[0] = temp[4];
+    const backFace = temp[4];
+    scramble[0] = [backFace[8], backFace[7], backFace[6], backFace[5], backFace[4], backFace[3], backFace[2], backFace[1], backFace[0]];
     scramble[2] = temp[0];
     scramble[5] = temp[2];
-    scramble[4] = temp[5];
-    const upFace = [...scramble[0]];
+    const leftFace = temp[5];
+    scramble[4] = [leftFace[8], leftFace[7], leftFace[6], leftFace[5], leftFace[4], leftFace[3], leftFace[2], leftFace[1], leftFace[0]];
+    const upFace = [...scramble[1]];
     scramble[1] = [upFace[6], upFace[3], upFace[0], upFace[7], upFace[4], upFace[1], upFace[8], upFace[5], upFace[2]];
-    const downFace = [...scramble[5]];
+    const downFace = [...scramble[3]];
     scramble[3] = [downFace[2], downFace[5], downFace[8], downFace[1], downFace[4], downFace[7], downFace[0], downFace[3], downFace[6]];
 }
 
@@ -787,6 +789,40 @@ const rotateLayer = (layer) => {
     layer[4] = layer[3];
     layer[3] = layer[2];
     layer[2] = storedEdge;
+}
+
+// Function to give all possible color orientations of a given PLL case appearance
+const getAllColorOrientations = (appearance) => {
+    let orientationOne = '';
+    let orientationTwo = '';
+    let orientationThree = '';
+    let orientationFour = '';
+    for (const edge of appearance) {
+        for (const sticker of edge) {
+            if (sticker === 4) {
+                orientationOne += '4,';
+                orientationTwo += '5,';
+                orientationThree += '2,';
+                orientationFour += '0,';
+            } else if (sticker === 5) {
+                orientationOne += '5,';
+                orientationTwo += '2,';
+                orientationThree += '0,';
+                orientationFour += '4,';
+            } else if (sticker === 2) {
+                orientationOne += '2,';
+                orientationTwo += '0,';
+                orientationThree += '4,';
+                orientationFour += '5,';
+            } else {
+                orientationOne += '0,';
+                orientationTwo += '4,';
+                orientationThree += '5,';
+                orientationFour += '2,';
+            }
+        }
+    }
+    return [orientationOne, orientationTwo, orientationThree, orientationFour];
 }
 
 // Function to perform an inputted algorithm to a given scramble
@@ -1155,6 +1191,35 @@ const solveOLL = (scramble) => {
     return solution + 'U U U ' + performAlg(scramble, OLLCase['algorithm']);
 }
 
+// Function to Permute Last Layer of cube
+const solvePLL = (scramble) => {
+    let solution = '';
+    // Get information on colors of stickers on around last layer
+    let lastLayerStickers = [
+        [scramble[2][0], scramble[2][3], scramble[2][6]],
+        [scramble[5][0], scramble[5][3], scramble[5][6]],
+        [scramble[4][8], scramble[4][5], scramble[4][2]],
+        [scramble[0][0], scramble[0][3], scramble[0][6]],
+    ]
+    // Find the PLL case whose appearance matches the above
+    let PLLCase = -1;
+    while (PLLCase === -1) {
+        PLLCase = oneLookPLLAlgorithms.find(alg => getAllColorOrientations(alg['appearance']).includes('' + lastLayerStickers + ',')) || -1;
+        if (PLLCase === -1) {
+            lastLayerStickers = [lastLayerStickers[3], lastLayerStickers[0], lastLayerStickers[1], lastLayerStickers[2]];
+            rotateU(scramble);
+            solution += 'U ';
+        }
+    }
+    solution += performAlg(scramble, PLLCase['algorithm']);
+    // Correctly orient the final layer to complete solution
+    while (scramble[0][3] !== 0) {
+        rotateU(scramble);
+        solution += 'U ';
+    }
+    return solution;
+}
+
 // Function to correctly format a given algorithm
 const formatAlg = (algorithm) => {
     let formattedAlg = '';
@@ -1240,7 +1305,9 @@ const solve = (scramble) => {
         const topLayerSolution = solveTopLayer(scramble);
         const secondLayerSolution = solveSecondLayer(scramble);
         const OLLSolution = solveOLL(scramble);
-        return 'Cross: ' + formatAlg(crossSolution) + '\nFirst Layer: X2 ' + formatAlg(topLayerSolution) + '\nSecond Layer: ' + formatAlg(secondLayerSolution) + '\nOLL: ' + formatAlg(OLLSolution);
+        const PLLSolution = solvePLL(scramble);
+        
+        return 'Cross: ' + formatAlg(crossSolution) + '\nFirst Layer: X2 ' + formatAlg(topLayerSolution) + '\nSecond Layer: ' + formatAlg(secondLayerSolution) + '\nOLL: ' + formatAlg(OLLSolution) + '\nPLL: ' + formatAlg(PLLSolution);
     }
 } 
 
