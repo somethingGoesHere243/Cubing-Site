@@ -66,8 +66,12 @@ const generateNewScramble = () => {
         prevFaceIndex = randomFaceIndex;
         currentNumberOfMoves += 1;
     }
-    
-    // Update scramble displayed on page
+    return newScramble
+}
+
+// Function to show a new scramble on page
+const displayNewScramble = () => {
+    const newScramble = generateNewScramble();
     scrambleText.innerText = newScramble;
 }
 
@@ -288,7 +292,7 @@ const timerEnd = () => {
 // Check if on timer page then perform necessary start up functions
 if (clearRecordsBtn) {
     // Get an intial scramble to display on page
-    generateNewScramble();
+    displayNewScramble();
     // Display current averages and records from local storage
     let mostRecentTime = previousTimes.shift() || {'time': Infinity}
     numberOfSolves -= 1;
@@ -301,7 +305,7 @@ if (clearRecordsBtn) {
     });
 
     newScrambleBtn.addEventListener('click', () => {
-        generateNewScramble();
+        displayNewScramble();
         newScrambleBtn.blur();
     });
 
@@ -467,6 +471,11 @@ if (oneLookPLLContainer) {
 
 // Solver page scripts
 const solveBtn = document.getElementById('solve-btn');
+const randomScrambleBtn = document.getElementById('random-scramble-btn');
+const randomScrambleOutput = document.getElementById('random-scramble-output');
+const solutionOutput = document.getElementById('solution-output');
+
+const cubeFaces = document.getElementsByClassName('face');
 
 const colors = ['red', 'white', 'green', 'yellow', 'blue', 'orange'];
 
@@ -474,6 +483,9 @@ const colors = ['red', 'white', 'green', 'yellow', 'blue', 'orange'];
 const getColor = (sticker) => {
     let classList = [...sticker.classList];
     classList.splice(classList.indexOf('sticker'), 1);
+    if (classList.includes('center')) {
+        classList.splice(classList.indexOf('center'), 1);
+    }
     return classList[0];
 }
 
@@ -1177,12 +1189,19 @@ const solveOLL = (scramble) => {
         [isYellow(scramble[0][0]), isYellow(scramble[0][3]), isYellow(scramble[0][6])],
     ];
     let OLLCase = -1;
+    // Keep track of number of up face rotations
+    let upFaceRotations = 0;
     while (OLLCase === -1) {
         OLLCase = oneLookOLLAlgorithms.find(alg => '' + alg['appearance'] === '' + yellowStickers) || -1;
         if (OLLCase === -1) {
             rotateLayer(yellowStickers);
             rotateU(scramble);
-            solution += 'U '
+            solution += 'U ';
+            upFaceRotations += 1;
+        }
+        // If we complete 4 rotations of the up face without finding a oll case our permutation of the cube must be invalid
+        if (upFaceRotations === 4) {
+            return 'Invalid state'
         }
     }
     rotateU(scramble);
@@ -1203,12 +1222,19 @@ const solvePLL = (scramble) => {
     ]
     // Find the PLL case whose appearance matches the above
     let PLLCase = -1;
+    // Keep track of number of up face rotations
+    let upFaceRotations = 0;
     while (PLLCase === -1) {
         PLLCase = oneLookPLLAlgorithms.find(alg => getAllColorOrientations(alg['appearance']).includes('' + lastLayerStickers + ',')) || -1;
         if (PLLCase === -1) {
             lastLayerStickers = [lastLayerStickers[3], lastLayerStickers[0], lastLayerStickers[1], lastLayerStickers[2]];
             rotateU(scramble);
             solution += 'U ';
+            upFaceRotations += 1;
+        }
+        // If we complete 4 rotations of the up face without finding a pll case our permutation of the cube must be invalid
+        if (upFaceRotations === 4) {
+            return 'Invalid state'
         }
     }
     solution += performAlg(scramble, PLLCase['algorithm']);
@@ -1246,7 +1272,7 @@ const formatAlg = (algorithm) => {
     return formattedAlg;
 }
 
-// Function to solve a given scramble and output the steps taken to solve
+// Function to solve a given scramble and output the steps taken to solve in HTML format
 const solve = (scramble) => {
     // Check if scramble has right amount of each color/sticker
     const edgeCounts = [0, 0, 0, 0, 0, 0];
@@ -1260,8 +1286,7 @@ const solve = (scramble) => {
         }
     }
     if (!edgeCounts.every(num => num === 4) || !cornerCounts.every(num => num === 4)) {
-        alert('Scramble Invalid');
-        return;
+        return `<p class='solver-error'>Invalid State</p>`;
     } 
     // Check if all pieces of the cube are valid
     const seenEdges = [];
@@ -1270,10 +1295,8 @@ const solve = (scramble) => {
     getEdgePieces(scramble).forEach(edge => {
         if (isValid) {
             if (seenEdges.includes(edge)) {
-                alert('Scramble Invalid');
                 isValid = false;
             } else if (!validEdges.includes(edge)) {
-                alert('Scramble Invalid');
                 isValid = false;
             } else {
                 seenEdges.push(edge);
@@ -1284,10 +1307,8 @@ const solve = (scramble) => {
     getCornerPieces(scramble).forEach(corner => {
         if (isValid) {
             if (seenCorners.includes(corner)) {
-                alert('Scramble Invalid');
                 isValid = false;
             } else if (!validCorners.includes(corner)) {
-                alert('Scramble Invalid');
                 isValid = false;
             } else {
                 seenCorners.push(corner);
@@ -1305,41 +1326,102 @@ const solve = (scramble) => {
         const topLayerSolution = solveTopLayer(scramble);
         const secondLayerSolution = solveSecondLayer(scramble);
         const OLLSolution = solveOLL(scramble);
+        // Check if a OLL solution was found
+        if (OLLSolution === 'Invalid state') {
+            return `<p class='solver-error'>Invalid State</p>`;
+        }
         const PLLSolution = solvePLL(scramble);
+        // Check if a PLL solution was found
+        if (PLLSolution === 'Invalid state') {
+            return `<p class='solver-error'>Invalid State</p>`;
+        }
         
-        return 'Cross: ' + formatAlg(crossSolution) + '\nFirst Layer: X2 ' + formatAlg(topLayerSolution) + '\nSecond Layer: ' + formatAlg(secondLayerSolution) + '\nOLL: ' + formatAlg(OLLSolution) + '\nPLL: ' + formatAlg(PLLSolution);
+        // Return solution in HTML form
+        return `
+            <p><strong>Solution</strong> (Applied with white on top and green in front): </p>
+            <p><span class='solution-subheader'>Cross: </span><span class='solution-alg'>${formatAlg(crossSolution)}</span></p>
+            <p><span class='solution-subheader'>First Layer: </span><span class='solution-alg'>X2 ${formatAlg(topLayerSolution)}</span></p>
+            <p><span class='solution-subheader'>Second Layer: </span><span class='solution-alg'>${formatAlg(secondLayerSolution)}</span></p>
+            <p><span class='solution-subheader'>OLL: </span><span class='solution-alg'>${formatAlg(OLLSolution)}</span></p>
+            <p><span class='solution-subheader'>PLL: </span><span class='solution-alg'>${formatAlg(PLLSolution)}</span></p>
+        `
+    } else {
+        return `<p class='solver-error'>Invalid State</p>`;
     }
 } 
 
-// Add event listeners to each sticker allowing them to change color when clicked
-[...document.getElementsByClassName('sticker')].forEach(sticker => {
-    if (![...sticker.classList].includes('center')) {
-        sticker.addEventListener('click', () => {
-            // Retrieve current color of sticker
-            const currColor = getColor(sticker);
-            // Retrieve next color to be given after click
-            const newColor = colors[(colors.indexOf(currColor) + 1) % 6];
-            // Replace color class on sticker
-            sticker.classList.remove(currColor);
-            sticker.classList.add(newColor);
-        })
-    } 
-})
-
-// Add event listener to solve button to read the given scramble then solve it
-solveBtn.addEventListener('click', () => {
-    const currCubePosn = getScramble();
-    // For testing purposes create a random scramble to solve
-    let randScramble = '';
-    for (let i=0; i<20; i++) {
-        const faces = ['B', 'D', 'F', 'L', 'R', 'U'];
-        const moves=[rotateB, rotateD, rotateF, rotateL, rotateR, rotateU];
-        const randomIndex = Math.floor(Math.random() * 6)
-        moves[randomIndex](currCubePosn);
-        randScramble += faces[randomIndex] + ' ';
+// Function to display 2d net of a given cube permutation to the screen
+const display2DCube = (permutation) => {
+    // Loop through each face of cube changing classes of stickers to necessary colours
+    for (let i = 0; i<6 ; i++) {
+        const currFace = cubeFaces[i];
+        const currFaceStickers = currFace.querySelectorAll('.sticker')
+        const newFace = permutation[i];
+        for (let j = 0; j<9; j++) {
+            currSticker = currFaceStickers[j]
+            currSticker.classList.remove(getColor(currSticker));
+            currSticker.classList.add(colors[newFace[j]]);
+        }
     }
-    console.log(formatAlg(randScramble));
-    const solution = solve(currCubePosn);
-    console.log(currCubePosn);
-    console.log(solution);
-})
+}
+
+// Flag to check if random scramble should be shown on page
+let haveRandomScramble = false;
+
+// Check if on solver page then add appropriate event listeners
+if (solveBtn) {
+    // Add event listeners to each sticker allowing them to change color when clicked
+    [...document.getElementsByClassName('sticker')].forEach(sticker => {
+        if (![...sticker.classList].includes('center')) {
+            sticker.addEventListener('click', () => {
+                // Retrieve current color of sticker
+                const currColor = getColor(sticker);
+                // Retrieve next color to be given after click
+                const newColor = colors[(colors.indexOf(currColor) + 1) % 6];
+                // Replace color class on sticker
+                sticker.classList.remove(currColor);
+                sticker.classList.add(newColor);
+            })
+        } 
+    })
+
+    
+
+    // Add event listener to solve button to read the given scramble then solve it
+    solveBtn.addEventListener('click', () => {
+        // Check if random scramble output should be hidden
+        if (!haveRandomScramble) {
+            randomScrambleOutput.classList.add('hidden');
+        } else {
+            haveRandomScramble = false;
+        }
+
+        // Find solution to scramble currently on page
+        const currCubePosn = getScramble();
+        const solution = solve(currCubePosn);
+    
+        // Display solution to screen
+        solutionOutput.classList.remove('hidden')
+        solutionOutput.innerHTML = solution
+    })
+
+    // Add event listener to randomise button to generate a random scramble and display on page
+    randomScrambleBtn.addEventListener('click', () => {
+        haveRandomScramble = true;
+
+        // Hide solution if one is currently being shown
+        solutionOutput.classList.add('hidden')
+
+        // Return cube to solved state
+        const currCubePosn = [[0,0,0,0,0,0,0,0,0], [1,1,1,1,1,1,1,1,1], [2,2,2,2,2,2,2,2,2], [3,3,3,3,3,3,3,3,3], [4,4,4,4,4,4,4,4,4], [5,5,5,5,5,5,5,5,5]];
+        // Generate a random scramble
+        let randScramble = generateNewScramble();
+        // Apply scramble to cube
+        performAlg(currCubePosn , randScramble);
+        // Display new scrambled cube on screen
+        display2DCube(currCubePosn)
+        // Display generated scramble to screen
+        randomScrambleOutput.classList.remove('hidden')
+        randomScrambleOutput.innerHTML = '<strong>Random Scramble</strong> (Applied with white on top and green in front): ' + randScramble;
+    })
+}

@@ -19,6 +19,8 @@
     --solve-button-background: #eaeaea; 
     --solve-button-border: #dd6e42; 
     --solve-button-pressed: #e8dab2; 
+    --solution-output-background: #e8dab2;
+    --solution-output-border: #dd6e42;
 }
 
 /* General Styling */
@@ -578,12 +580,11 @@ body {
     background-color: rgb(255,128,0);
 }
 
-#solve-btn {
+#solve-btn, #random-scramble-btn {
     grid-column-start: 4;
     grid-row-start: 3;
     width: 192px;
     height: 64px;
-    margin: 64px 32px;
     background-color: var(--solve-button-background);
     border: solid 4px var(--solve-button-border);
     color: var(--sidebar-text);
@@ -591,6 +592,47 @@ body {
     cursor: pointer;
 }
 
-#solve-btn:active {
+#solve-btn:active, #random-scramble-btn:active {
     background-color: var(--solve-button-pressed);
+}
+
+#solve-btn {
+    margin: 40px 32px 0 32px;
+}
+
+#random-scramble-btn {
+    margin: 120px 32px 0 32px;
+}
+
+#solution-output, #random-scramble-output {
+    width: 1032px;
+    height: auto;
+    overflow: auto;
+    margin: 50px;
+    padding: 10px;
+    background-color: var(--solution-output-background);
+    border: 4px solid var(--solution-output-border);
+}
+
+#random-scramble-output {
+    text-align: center;
+    font-size: 2.3rem;
+}
+
+#solution-output > p {
+    margin: 20px;
+    font-size: 2.5rem;
+}
+
+.solver-error {
+    text-align: center;
+    font-size: 3rem;
+}
+
+.solution-subheader {
+    font-weight: bold;
+}
+
+.solution-alg {
+    font-size: 2rem;
 }
