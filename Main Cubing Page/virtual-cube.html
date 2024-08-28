@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Cubing Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <nav id="navbar-top">
+            <a href="timer.html" class="nav-link-top">Timer</a>
+            <a href="learning-page.html" class="nav-link-top">Learn Algorithms</a>
+            <a href="solver.html" class="nav-link-top">Solver</a>
+            
+        </nav>
+        <div id="virtual-cube-container">
+            <div class="virtual-cube-btn-container" id="left-buttons">
+                <button class="virtual-cube-btn" id="rotate-B" type="button">Blue (B)</button>
+                <button class="virtual-cube-btn" id="rotate-D" type="button">Yellow (Y)</button>
+                <button class="virtual-cube-btn" id="rotate-L" type="button">Orange (O)</button>
+            </div>
+            <canvas id="virtual-cube-canvas" width="300px" height="300px"></canvas>
+            <div class="virtual-cube-btn-container" id="right-buttons">
+                <button class="virtual-cube-btn" id="rotate-F" type="button">Green (G)</button>
+                <button class="virtual-cube-btn" id="rotate-U" type="button">White (W)</button>
+                <button class="virtual-cube-btn" id="rotate-R" type="button">Red (R)</button>
+            </div>   
+        </div>   
+        <button class="virtual-cube-btn" id="change-direction" type="button">Clockwise (Shift)</button>
+        
+        <script src="data.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>
