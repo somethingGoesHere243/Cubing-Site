@@ -2125,7 +2125,7 @@ if (virtualCubeCanvas) {
         }
     })
     // When shift key pressed change direction which faces are rotated
-    window.addEventListener('keydown', (key) => {
+    window.addEventListener('keyup', (key) => {
         if (key.code === 'ShiftLeft' || key.code === 'ShiftRight') {
             rotateACW = !rotateACW;
             if (rotateACW) {

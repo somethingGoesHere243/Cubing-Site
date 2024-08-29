@@ -439,7 +439,7 @@ body {
     width: 90%;
 }
 
-.notation-card {
+.notation-card, .f2l-card {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -450,7 +450,7 @@ body {
     border-radius: 16px;
 }
 
-.notation-img {
+.notation-img, .f2l-img {
     width: 100%;
     max-width: 300px;
     border-top-left-radius: 8px;
@@ -463,13 +463,13 @@ body {
     text-align: center;
 }
 
-.notation-description {
+.notation-description, .f2l-img-description {
     font-size: 2rem;
     margin: 0.5rem;
     text-align: center;
 }
 
-.notation-subheader {
+.learning-subheader {
     width: 100%;
     height: 4.5rem;
     padding: 1rem;
@@ -490,9 +490,29 @@ body {
         font-size: 1.5rem;
     }
 
-    .notation-description {
+    .notation-description, .f2l-img-description {
         font-size: 1rem;
     }
+}
+
+/* First 2 layers page styling */
+
+#f2l-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    overflow: auto;
+    background-color: var(--main-background);
+}
+
+.f2l-algorithms {
+    display: flex;
+    align-items: center;
+}
+
+.f2l-explanation {
+    font-size: 1.5rem;
 }
 
 /* Algorithm pages styling */
