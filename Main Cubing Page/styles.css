@@ -394,12 +394,11 @@ body {
     background-color: var(--learning-link-background);
     border: 5px solid var(--learning-link-border);
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .learning-link:hover {
-    background-color: var(--learning-link-hover-background);
-    color: var(--learning-link-hover-text);
-    cursor: pointer;
+    border: 2px solid var(--learning-link-border);
 }
 
 .learning-link-image {
@@ -416,6 +415,83 @@ body {
         grid-template-columns: 1fr;
         grid-template-rows: repeat(6, 1fr);
         padding-bottom: 20px;
+    }
+}
+
+/* Notation page styling */
+
+.notation-preamble {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.notation-preamble-div {
+    font-size: 1.5rem;
+    width: 70%;
+    margin: 0 15%;
+}
+
+.notation-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5%;
+    width: 90%;
+}
+
+.notation-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 300px;
+    margin: 16px;
+    background-color: var(--algorithm-card-background);
+    border: 8px solid var(--algorithm-card-border);
+    border-radius: 16px;
+}
+
+.notation-img {
+    width: 100%;
+    max-width: 300px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.notation-letter {
+    font-size: 2.5rem;
+    margin: 0.5rem;
+    text-align: center;
+}
+
+.notation-description {
+    font-size: 2rem;
+    margin: 0.5rem;
+    text-align: center;
+}
+
+.notation-subheader {
+    width: 100%;
+    height: 4.5rem;
+    padding: 1rem;
+    background-color: var(--sidebar-background);
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+@media (max-width:1200px) {
+    .notation-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width:600px) {
+    .notation-letter {
+        font-size: 1.5rem;
+    }
+
+    .notation-description {
+        font-size: 1rem;
     }
 }
 

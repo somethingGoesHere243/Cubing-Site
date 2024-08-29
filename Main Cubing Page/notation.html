@@ -7,7 +7,143 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <h1>Notation</h1>
+        <nav id="navbar-top">
+            <a href="timer.html" class="nav-link-top">Timer</a>
+            <a href="solver.html" class="nav-link-top">Solver</a>
+            <a href="virtual-cube.html" class="nav-link-top">Virtual Cube</a>
+        </nav>
+        <a href="learning-page.html" id="back-button">Back</a>
+        <div class="padding-top-of-screen" id="main-container">
+            <h1 id="learning-header">Notation</h1>
+            <p class="notation-preamble">Each move of the Rubik's cube can be notated by just two charaters, the first to represent the face/slice being rotate, and the second to represent the angle which it is being rotated by. </p>
+            <p class="notation-preamble">The second symbol can take one of two values: </p>
+            <div class="notation-preamble-div">
+                <ul>
+                    <li>If no second symbol is present the face should be rotated 90 degrees clockwise (as if you were facing that side).</li>
+                    <li>If the second symbol is a ' the face should be rotated 90 degrees anticlockwise.</li>
+                    <li>If the second symbol is a 2 the face should be rotated 180 degrees.</li>
+                </ul>
+            </div>
+            <div class="notation-container">
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveU.png" alt="U move">
+                    <p class="notation-letter">U</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveU2.png" alt="U2 move">
+                    <p class="notation-letter">U2</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveU'.png" alt="U' move">
+                    <p class="notation-letter">U'</p>
+                </div>
+            </div>
+            <p class="notation-preamble">All diagrams on this page show the end result of a move if the cube started by being held with the white face on top and the green face in front</p>
+            <h2 class="notation-subheader">Face Turns</h2>
+            <div id="face-turns" class="notation-container">
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveU.png" alt="U move">
+                    <p class="notation-letter">U</p>
+                    <p class="notation-description">Up Face</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveF.png" alt="F move">
+                    <p class="notation-letter">F</p>
+                    <p class="notation-description">Front Face</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveR.png" alt="R move">
+                    <p class="notation-letter">R</p>
+                    <p class="notation-description">Right Face</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveD.png" alt="D move">
+                    <p class="notation-letter">D</p>
+                    <p class="notation-description">Down Face</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveB.png" alt="B move">
+                    <p class="notation-letter">B</p>
+                    <p class="notation-description">Back Face</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveL.png" alt="L move">
+                    <p class="notation-letter">L</p>
+                    <p class="notation-description">Left Face</p>
+                </div>
+            </div>
+            <h2 class="notation-subheader">Wide Face Turns</h2>
+            <div id="wide-face-turns" class="notation-container">
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveUw.png" alt="wide U move">
+                    <p class="notation-letter">u / Uw</p>
+                    <p class="notation-description">Wide Up</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveFw.png" alt="wide F move">
+                    <p class="notation-letter">f / Fw</p>
+                    <p class="notation-description">Wide Front</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveRw.png" alt="wide R move">
+                    <p class="notation-letter">r / Rw</p>
+                    <p class="notation-description">Wide Right</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveDw.png" alt="wide D move">
+                    <p class="notation-letter">d / Dw</p>
+                    <p class="notation-description">Wide Down</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveBw.png" alt="wide B move">
+                    <p class="notation-letter">b / Bw</p>
+                    <p class="notation-description">Wide Back</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveLw.png" alt="wide L move">
+                    <p class="notation-letter">l / Lw</p>
+                    <p class="notation-description">Wide Left</p>
+                </div>
+            </div>
+            <h2 class="notation-subheader">Slice Turns</h2>
+            <div id="slice-turns" class="notation-container">
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveM.png" alt="M move">
+                    <p class="notation-letter">M</p>
+                    <p class="notation-description">M Slice</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveE.png" alt="E move">
+                    <p class="notation-letter">E</p>
+                    <p class="notation-description">E Slice</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveS.png" alt="S move">
+                    <p class="notation-letter">S</p>
+                    <p class="notation-description">S Slice</p>
+                </div>
+            </div>
+            <h2 class="notation-subheader">Full Cube Rotations</h2>
+            <div id="cube-rotations" class="notation-container">
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveX.png" alt="X rotation">
+                    <p class="notation-letter">X</p>
+                    <p class="notation-description">X Rotation</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveY.png" alt="Y rotation">
+                    <p class="notation-letter">Y</p>
+                    <p class="notation-description">Y Rotation</p>
+                </div>
+                <div class="notation-card">
+                    <img class="notation-img" src="Notation/MoveZ.png" alt="Z rotation">
+                    <p class="notation-letter">Z</p>
+                    <p class="notation-description">Z Rotation</p>
+                </div>
+            </div>
+        </div>
+        
+        <script src="data.js"></script>
         <script src="script.js"></script>
     </body>
 </html>
