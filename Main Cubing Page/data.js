@@ -1,4 +1,4 @@
-// Data for algorithm pages
+// Data for algorithms
 
 const twoLookOLLAlgorithms = [
     {name: 'Dot', type: 'edges', src:'Two-Look-OLL-IMGs\\Dot.png', algorithm:"F R U R' U' F' f R U R' U' f'"},
@@ -120,7 +120,7 @@ const oneLookPLLAlgorithms = [
 
 const oneLookPLLAlgorithmsTypes = ['adj-corner-swap', 'diag-corner-swap', 'corners-only', 'edges-only'];
 
-// Data for solver page
+// Data for validating inputted cube permutations
 
 const validEdges = [
     '01', '10', '02', '20', '03', '30', '04', '40',
