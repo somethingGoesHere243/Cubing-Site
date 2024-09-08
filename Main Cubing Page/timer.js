@@ -250,7 +250,7 @@ const timerStart = () => {
         timerRunning = true;
 
         timerStartTime = new Date();
-        timerText.innerText = 'Space/Click to End'
+        timerText.innerText = 'Space/Tap to End'
         timer.innerText = '0:00.00';
         updateTimer()
     }
@@ -283,7 +283,7 @@ const timerEnd = () => {
     const finalTime = new Date();
     const timeAchieved = finalTime - timerStartTime;
     // Update time displayed on page
-    timerText.innerText = 'Space/Click to Start'
+    timerText.innerText = 'Space/Tap to Start'
     timer.innerText = formatTime(timeAchieved);
     updateAverages(timeAchieved);
     // Generate new scramble ready for next solve
@@ -342,7 +342,7 @@ document.addEventListener('keydown', (key) => {
     }
 })
 
-timerContainer.addEventListener('mousedown', (key) => {
+timer.addEventListener('touchstart', (key) => {
     if (!optionsShowing){
         if (timerRunning) {
             timerEnd()
@@ -363,7 +363,7 @@ document.addEventListener('keyup', (key) => {
     }
 })
 
-timerContainer.addEventListener('mouseup', (key) => {
+timer.addEventListener('touchend', (key) => {
     if (!optionsShowing) {
         // Check timer is trying to start
         if (timer.style.color === 'rgb(221, 99, 66)') {
@@ -381,15 +381,16 @@ window.addEventListener('beforeunload', () => {
 
 // Add event listener to show/hide user data on smaller screens
 const showUserDataBtn = document.getElementById('show-user-data-btn');
-let userDataIsShowing = true;
+const hideUserDataBtn = document.getElementById('hide-user-data-btn');
+
 showUserDataBtn.addEventListener('click', () => {
-    if (userDataIsShowing) {
-        userDataContainer.classList.add('hidden-media');
-        showUserDataBtn.innerHTML = 'Show User Data';
-        userDataIsShowing = false;
-    } else if (!optionsShowing) {
-        userDataContainer.classList.remove('hidden-media');
-        showUserDataBtn.innerHTML = 'Hide User Data';
-        userDataIsShowing = true;
-    } 
+    userDataContainer.classList.remove('hidden-media');
+    hideUserDataBtn.classList.remove('hidden-media');
+    showUserDataBtn.classList.add('hidden-media')
+})
+
+hideUserDataBtn.addEventListener('click', () => {
+    userDataContainer.classList.add('hidden-media');
+    hideUserDataBtn.classList.add('hidden-media');
+    showUserDataBtn.classList.remove('hidden-media')
 })

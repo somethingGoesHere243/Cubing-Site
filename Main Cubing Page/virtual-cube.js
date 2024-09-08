@@ -562,6 +562,9 @@ window.addEventListener('mousedown', () => {
 })
 
 window.addEventListener('mouseup', () => {
+    // Reset mouse position
+    currMouse.x = -1;
+    currMouse.y = -1;
     // End camera rotation
     isRotating = false;
 })
@@ -580,6 +583,38 @@ window.addEventListener('mousemove', (event) => {
         // Update current position of mouse
         currMouse.x = event.pageX;
         currMouse.y = event.pageY;
+    }
+})
+
+// Touchscreen event listeners for mobile use
+window.addEventListener('touchstart', () => {
+    // Begin camera rotation
+    isRotating = true;
+})
+
+window.addEventListener('touchend', () => {
+    // Reset mouse position
+    currMouse.x = -1;
+    currMouse.y = -1;
+    // End camera rotation
+    isRotating = false;
+})
+
+window.addEventListener('touchmove', (event) => {
+    timeSinceMouseMovement = 0;
+    const touch = event.touches[0];
+
+    if (currMouse.x === -1 && currMouse.y === -1) {
+        // Set initial mouse position
+        currMouse.x = touch.pageX;
+        currMouse.y = touch.pageY;
+    } else {
+        // Find direction in which mouse is moving
+        currMouseVelocity.x = touch.pageX - currMouse.x;
+        currMouseVelocity.y = touch.pageY - currMouse.y;
+        // Update current position of mouse
+        currMouse.x = touch.pageX;
+        currMouse.y = touch.pageY;
     }
 })
 
